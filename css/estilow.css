@@ -1,0 +1,169 @@
+/* fuentes:
+https://www.w3schools.com/html/html_layout.asp
+https://peterned.home.xs4all.nl/
+modificaciones: Karmele Arocena */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: gainsboro;
+    margin: 0;
+}
+
+/* Estilo del header*/
+
+header {
+    background-color: #777;
+    border-bottom: 6px double #444;
+    border-top: 6px double #444;
+    color: white;
+    padding: 5px;
+    text-align: center;
+}
+
+/* El logo flota a la izquierda */
+
+img {
+    float: left;
+}
+
+/* Estilo de la barra de navegación */
+
+nav {
+    background-color: #333;
+    overflow: hidden;
+}
+
+/* estilos de los enlaces del nav */
+
+nav a {
+    color: #f2f2f2;
+    display: block;
+    float: left;
+    padding: 10px 16px;
+    text-align: center;
+    text-decoration: none;
+}
+
+/* Al pasar el ratón por los enlaces cambia el estilo*/
+
+nav a:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+/*El contenedor principal */
+
+main {
+    background: #f0f0f0;
+    margin: 0 auto;
+    /* centrado, no en IE5 */
+    width: 80%;
+}
+
+/* La sección. Si se añaden más secciones y se cambia el % se convierten en columnas */
+
+section {
+    float: left;
+    padding: 15px;
+    /*     min-height: 420px; */
+    width: 100%;
+}
+
+/* Estilo del pie */
+
+footer {
+    background-color: #777;
+    border-bottom: 6px double#444;
+    border-top: 6px double #444;
+    clear: left;
+    color: white;
+    padding: 5px;
+    text-align: center;
+}
+
+/* Estilos añadidos para los ejercicios */
+
+/********************************************************************
+* Estilos para el formulario
+************************************************/
+
+input[type=text], input[type=password], input[type=email], select {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+input[type=submit] {
+    width: 100%;
+    background-color: rgb(120, 145, 121);
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+input[type=submit]:hover {
+    background-color: #9eb4af;
+}
+
+div {
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 20px;
+}
+
+div .uno {
+    background-color: #dfd7d7;
+}
+
+textarea {
+    width: 100%;
+    height: 150px;
+    padding: 12px 20px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+    resize: none;
+}
+
+input[type=radio] {
+    width: 2em;
+    margin-left: 9em;
+}
+
+input[type='checkbox'] {
+    width: 2%;
+    margin: 8px;
+    margin-left: 9em;
+}
+
+select {
+    padding: 10px;
+    height: 5em;
+}
+
+option {
+    min-height: 2em;
+    padding: 2px 2px 2px;
+}
+
+.comen {
+    color: darkslateblue;
+    font-weight: bold;
+    margin-bottom: 1.5em;
+}
+
+#usuario, #clave {
+    width: 8em;
+    float: left;
+}
