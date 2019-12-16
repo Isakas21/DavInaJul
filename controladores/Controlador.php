@@ -5,9 +5,6 @@ class Controlador
     public function run()
     {
         session_start();
-            
-        
-
 
         if (!isset($_POST['login']) && !isset($_SESSION['logeado']))  //no se ha enviado el formulario
         { 
@@ -35,17 +32,17 @@ class Controlador
             $nombre = $_POST['nombre'];
             $contraseña = $_POST['pass'];
             $resultado = "Bienvenido/a $nombre";
-            
+            echo "<input type='hidden' name='login' value='login'>";
+
             $_SESSION['logeado'] = $_POST['login'];
             $_SESSION['usuario'] = $nombre;
             $_SESSION['contraseña'] = $contraseña;
             } else{
-                $_SESSION['logeado'] = $_POST['login'];
-                $_SESSION['usuario'] = $nombre;
-                $_SESSION['contraseña'] = $contraseña;
+                $_POST['login'] = $_SESSION['logeado'];
+                $nombre = $_SESSION['usuario'];
+                $contraseña = $_SESSION['contraseña'];
+                $resultado = "Bienvenido/a $nombre";
             }
-
-            
 
             $this->mostrarResultado($resultado, $this->crearLibros(), $this->mostrarLibro());
             exit();
@@ -64,13 +61,17 @@ class Controlador
             new Libro("PHP para doomies", "Enseñanzas de PHP", "educativo", "05-12-2019", "img/harold.png"),
             new Libro("Java para doomies", "Enseñanzas de Java", "educativo", "08-12-2019", "img/harold.png"),
             new Libro("C para doomies", "Enseñanzas de C", "educativo", "06-12-2019", "img/harold.png"),
-            new Libro("HTML para doomies", "Enseñanzas de HTML", "educativo", "29-11-2019", "img/harold.png"),
-            new Libro("HTML para doomies", "Enseñanzas de HTML", "educativo", "29-11-2019", "img/harold.png"),
-            new Libro("HTML para doomies", "Enseñanzas de HTML", "educativo", "29-11-2019", "img/harold.png"),
-            new Libro("HTML para doomies", "Enseñanzas de HTML", "educativo", "29-11-2019", "img/harold.png"),
-            new Libro("HTML para doomies", "Enseñanzas de HTML", "educativo", "29-11-2019", "img/harold.png"),
-            new Libro("HTML para doomies", "Enseñanzas de HTML", "educativo", "29-11-2019", "img/harold.png")
+            new Libro("1 para doomies", "Enseñanzas de HTML", "educativo", "29-11-2019", "img/harold.png"),
+            new Libro("2 para doomies", "Enseñanzas de HTML", "educativo", "29-11-2019", "img/harold.png"),
+            new Libro("3 para doomies", "Enseñanzas de HTML", "educativo", "29-11-2019", "img/harold.png"),
+            new Libro("4 para doomies", "Enseñanzas de HTML", "educativo", "29-11-2019", "img/harold.png"),
+            new Libro("Javascript para doomies", "Enseñanzas de HTML", "educativo", "29-11-2019", "img/harold.png"),
+            new Libro("6 para doomies", "Enseñanzas de HTML", "educativo", "29-11-2019", "img/harold.png")
         );
+        if (isset($_POST['btnFiltro']) && $_POST['btnFiltro'] == 'filtrar'){
+            return $this->ordenarLibro($libros);
+        }
+        echo "No funciona";
         return $libros;
     }
 
@@ -92,6 +93,22 @@ class Controlador
         }
         return $detalle;
     }
-    
+
+    private function ordenarLibro($libros)
+    {
+        $ordenados=array();
+        if ($_POST['filtro'] == 'novedad'){
+            for ($i = count($libros) - 1; $i >= 0; $i--){
+                $ordenados[] = $libros[$i];
+            }
+            $libros = $ordenados;
+        } elseif($_POST['filtro'] == 'nombre'){
+            $libros = sort($libros);
+        } else {
+            echo "ordenado";
+
+        }
+        return $libros;
+    }
 }
 ?>
