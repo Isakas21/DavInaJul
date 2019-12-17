@@ -40,21 +40,10 @@ echo "</div>";
                     <input type="radio" name="filtro" value="nombre">Nombre
                 </li>
                 <li>
-                    <input type="radio" name="filtro" value="categoria">Categoría
-                </li>
-                <li>
                     <input type="submit" name="btnFiltro" value="filtrar">
                 </li>
             </ul>
         </form>
-
-        <div>
-            <!--GENEROS (+ de 4)-->
-            <input type="checkbox" />Género 1
-            <input type="checkbox" />Género 2
-            <input type="checkbox" />Género 3
-            <input type="checkbox" />Género 4
-        </div>
 
     </section>
     <section class="ficha">
