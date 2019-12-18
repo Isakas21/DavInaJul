@@ -7,35 +7,36 @@ class Controlador
         session_start();
 
         if (!isset($_POST['login']) && !isset($_SESSION['logeado']))  //no se ha enviado el formulario
-        { 
+        {
             // primera petición
             //se llama al método para mostrar el formulario inici
             $resultado = '<form id="form" action="index.php" method="post">
-            <div id="datos">
+            <div class="datos">
                 <label>Nombre</label>
                 <input type="text" name="nombre" /><br />
                 <label>Contraseña</label>
                 <input type="password" name="pass" /><br />
                 <label>&nbsp;</label>
-                <input type="submit" name="login" value="login">
+                <input id="btnLog" type="submit" name="login" value="login">
             </div>
         </form>';
             $this->mostrarResultado($resultado, $this->crearLibros(), $this->mostrarLibro());
             exit();
-        } else{
+        } else {
             //el formulario ya se ha enviado
             //se recogen y procesan los datos
             //se llama al método para mostrar el resultado
-            if(isset($_POST['login'])){
-            $nombre = $_POST['nombre'];
-            $contraseña = $_POST['pass'];
-            $resultado = "Bienvenido/a $nombre";
-            echo "<input type='hidden' name='login' value='login'>";
+            if (isset($_POST['login'])) {
+                $nombre = $_POST['nombre'];
+                $contraseña = $_POST['pass'];
+                $resultado = "Bienvenido/a $nombre";
+                echo "<input type='hidden' name='login' value='login'>";
 
-            $_SESSION['logeado'] = $_POST['login'];
-            $_SESSION['usuario'] = $nombre;
-            $_SESSION['contraseña'] = $contraseña;
-            } else{
+                $_SESSION['logeado'] = $_POST['login'];
+                $_SESSION['usuario'] = $nombre;
+                $_SESSION['contraseña'] = $contraseña;
+            } else {
+
                 $_POST['login'] = $_SESSION['logeado'];
                 $nombre = $_SESSION['usuario'];
                 $contraseña = $_SESSION['contraseña'];
@@ -66,7 +67,7 @@ class Controlador
             new Libro("Javascript para doomies", "Enseñanzas de HTML", "29-11-2019", "img/harold.png"),
             new Libro("6 para doomies", "Enseñanzas de HTML", "29-11-2019", "img/harold.png")
         );
-        if (isset($_POST['btnFiltro']) && $_POST['btnFiltro'] == 'filtrar'){
+        if (isset($_POST['btnFiltro']) && $_POST['btnFiltro'] == 'filtrar') {
             return $this->ordenarLibro($libros);
         }
         return $libros;
@@ -74,7 +75,6 @@ class Controlador
 
     private function mostrarLibro()
     {
-        
         $detalle = array();
         if (isset($_POST['detalles']) && $_POST['btnDetalles'] == 'detalles') {
             $titulo = $_POST['detalles'];
@@ -93,25 +93,24 @@ class Controlador
 
     private function ordenarLibro($libros)
     {
-        $ordenados=array();
-        $titulos=array();
+        $ordenados = array();
+        $titulos = array();
         $mayor = "";
-        if ($_POST['filtro'] == 'novedad'){
-            for ($i = count($libros) - 1; $i >= 0; $i--){
+        if ($_POST['filtro'] == 'novedad') {
+            for ($i = count($libros) - 1; $i >= 0; $i--) {
                 $ordenados[] = $libros[$i];
             }
             $libros = $ordenados;
             return $libros;
-        } elseif($_POST['filtro'] == 'nombre'){
-            foreach($libros as $libro){
+        } elseif ($_POST['filtro'] == 'nombre') {
+            foreach ($libros as $libro) {
                 $titulos[] = $libro->getTitulo();
             }
             sort($titulos);
             array_multisort($libros, $titulos);
 
             return $libros;
-        } 
-        
+        }
     }
 }
 ?>

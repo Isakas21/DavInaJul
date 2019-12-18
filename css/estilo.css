@@ -32,8 +32,21 @@ header nav input{
 }
 header div{
     position: absolute;
-    right: 16.5em;
+    right: 20;
     top: 1.2em;
+    font-size: 125%;
+}
+
+.datos{
+    position: absolute;
+    right: 5em;
+    top: 0.5em;
+    font-size: 125%;
+}
+#btnLog{
+    position: absolute;
+    right: -3.5em;
+    top: 1.5em;
     font-size: 125%;
 }
 
@@ -76,6 +89,21 @@ header div{
     background-color: whitesmoke;
 }
 
+#formLib{
+    margin: 0.5em 0;
+}
+
+#btnDet{
+    width: unset;
+    padding: 0.2em 2em;
+    margin-left: 5em;
+}
+
+#cbxLib{
+    width: unset;
+    margin-left: 10em;
+    transform: scale(4);
+}
 
 /*seccion caja filtros*/
 
@@ -155,17 +183,20 @@ header div{
 
 .ficha img{
     border: 12px solid whitesmoke;
+    margin-left: 2em;
     border-radius: 1px;
     transform: rotate(3deg);
+    width: 220px;
+    height: 280px;
 }
 
 .ficha div{
     
     background-color: whitesmoke;
-    width: 50%;
+    width: 45%;
     border: 6px solid darkgray;
     transform: rotate(-2deg);
-    height: 15em;
+    height: 12em;
     position: absolute;
     right: 2em;
     top: 7em;
@@ -175,6 +206,15 @@ header div{
 .ficha div p{
     font-family: "Comic Sans MS", cursive, sans-serif;
 }
+
+#btnAñadir{
+    padding: 0.5em 8em;
+    position: absolute;
+    right: 27.5em;
+    top: 105em;
+    transform: scale(3.3);
+}
+
 
 .novedades{
     width: calc(100% - 8em);
@@ -199,6 +239,13 @@ header div{
     margin: 0;
 }
 
+.novedades article:hover{
+    border: 12px solid whitesmoke;
+    transform: scale(1.05) rotate(-2deg);
+    
+
+}
+
 .novedades article p{
     font-size: 150%;
     position: relative;
@@ -206,6 +253,7 @@ header div{
 }
 
 .novedades article img{
-    width: 50%;
+    width: 270px;
+    height: 340px;
 }
 

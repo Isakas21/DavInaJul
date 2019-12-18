@@ -18,8 +18,8 @@ echo "</div>";
         <ul>
             <?php
             foreach ($libros as $libro) {
-                echo "<li>" . $libro->getTitulo() . "<form method='post'><input type='submit' name='btnDetalles' value='detalles'>
-                        <input type='checkbox' value='" . $libro->getTitulo() . "'><input type='hidden' name='detalles' value='" . $libro->getTitulo() . "'>
+                echo "<li>" . $libro->getTitulo() . "<form id='formLib' method='post'><input type='submit' id='btnDet' name='btnDetalles' value='detalles'>
+                        <input type='checkbox' id='cbxLib' value='" . $libro->getTitulo() . "'><input type='hidden' name='detalles' value='" . $libro->getTitulo() . "'>
                         </form></li>";
             }
             ?>
@@ -45,6 +45,7 @@ echo "</div>";
             </ul>
         </form>
 
+
     </section>
     <section class="ficha">
         <!--FICHA DEL LIBRO-->
@@ -57,7 +58,7 @@ echo "</div>";
 
     </section>
 
-    <input type="button">añadir/quitar
+    <input type="submit" id="btnAñadir" name="btnAñadir" value='Añadir'>
     <!--BOTON AÑADIR/QUITAR-->
 
 
