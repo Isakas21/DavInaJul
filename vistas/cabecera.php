@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="es">
 
+<!-- @Author: Grupo 2 formado por David Martinez (Portavoz), Iñaki Bengoetxea(Colaborador) y Julen Osia (Creativo)
+     @Date: 18-12-2019
+-->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">

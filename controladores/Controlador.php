@@ -9,7 +9,7 @@ class Controlador
         if (!isset($_POST['login']) && !isset($_SESSION['logeado']))  //no se ha enviado el formulario
         {
             // primera petición
-            //se llama al método para mostrar el formulario inici
+            // se llama al método para mostrar el formulario inici
             $resultado = '<form id="form" action="index.php" method="post">
             <div class="datos">
                 <label>Nombre</label>
@@ -23,9 +23,9 @@ class Controlador
             $this->mostrarResultado($resultado, $this->crearLibros(), $this->mostrarLibro());
             exit();
         } else {
-            //el formulario ya se ha enviado
-            //se recogen y procesan los datos
-            //se llama al método para mostrar el resultado
+            // el formulario ya se ha enviado
+            // se recogen y procesan los datos
+            // se llama al método para mostrar el resultado
             if (isset($_POST['login'])) {
                 $nombre = $_POST['nombre'];
                 $contraseña = $_POST['pass'];
@@ -54,6 +54,8 @@ class Controlador
         include 'vistas/vista_resultado.php';
     }
 
+    // Crea los datos con los que trabajará el formulario
+    // @return Array $libros que contiene OBJETOS Libro
     private function crearLibros()
     {
         $libros = array(
@@ -73,6 +75,8 @@ class Controlador
         return $libros;
     }
 
+    // Muestra los detalles del libro seleccionado en el botón Detalles del formulario 
+    // @return Array $detalle que contiene titulo, descripción y portada del libro
     private function mostrarLibro()
     {
         $detalle = array();
@@ -91,6 +95,9 @@ class Controlador
         return $detalle;
     }
 
+    // Actualiza la página y ordena un array según el filtro utilizado
+    // @param $libros - Array de libros a ordenar
+    // @return $libros - Array de libros modificado y ordenado
     private function ordenarLibro($libros)
     {
         $ordenados = array();
