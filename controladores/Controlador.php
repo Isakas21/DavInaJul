@@ -57,15 +57,15 @@ class Controlador
     private function crearLibros()
     {
         $libros = array(
-            new Libro("PHP para doomies", "Enseñanzas de PHP", "05-12-2019", "img/harold.png"),
-            new Libro("Java para doomies", "Enseñanzas de Java", "08-12-2019", "img/harold.png"),
-            new Libro("C para doomies", "Enseñanzas de C", "06-12-2019", "img/harold.png"),
-            new Libro("1 para doomies", "Enseñanzas de HTML", "29-11-2019", "img/harold.png"),
-            new Libro("2 para doomies", "Enseñanzas de HTML", "29-11-2019", "img/harold.png"),
-            new Libro("3 para doomies", "Enseñanzas de HTML", "29-11-2019", "img/harold.png"),
-            new Libro("4 para doomies", "Enseñanzas de HTML", "29-11-2019", "img/harold.png"),
-            new Libro("Javascript para doomies", "Enseñanzas de HTML", "29-11-2019", "img/harold.png"),
-            new Libro("6 para doomies", "Enseñanzas de HTML", "29-11-2019", "img/harold.png")
+            new Libro("PHP para doomies", "Enseñanzas de PHP", "05-12-2019", "img/php.jpg"),
+            new Libro("Java para doomies", "Enseñanzas de Java", "08-12-2019", "img/java.jpg"),
+            new Libro("C para doomies", "Enseñanzas de C", "06-12-2019", "img/c.jpg"),
+            new Libro("Java para doomies", "Enseñanzas de HTML", "29-11-2019", "img/html.jpg"),
+            new Libro("Java para doomies", "Enseñanzas de Java", "08-12-2019", "img/java.jpg"),
+            new Libro("PHP para doomies", "Enseñanzas de PHP", "05-12-2019", "img/php.jpg"),
+            new Libro("Html para doomies", "Enseñanzas de HTML", "29-11-2019", "img/html.jpg"),
+            new Libro("Javascript para doomies", "Enseñanzas de HTML", "29-11-2019", "img/js.jpg"),
+            new Libro("Javascript para doomies", "Enseñanzas de C", "06-12-2019", "img/c.jpg")
         );
         if (isset($_POST['btnFiltro']) && $_POST['btnFiltro'] == 'filtrar') {
             return $this->ordenarLibro($libros);
@@ -86,7 +86,7 @@ class Controlador
                 }
             }
         } else {
-            $detalle[] = array("Titulo del libro", "Descripción del libro", "img/harold.png");
+            $detalle[] = array("Titulo del libro", "Descripción del libro", "img/logo.png");
         }
         return $detalle;
     }
@@ -101,16 +101,30 @@ class Controlador
                 $ordenados[] = $libros[$i];
             }
             $libros = $ordenados;
-            return $libros;
+            
         } elseif ($_POST['filtro'] == 'nombre') {
             foreach ($libros as $libro) {
                 $titulos[] = $libro->getTitulo();
             }
             sort($titulos);
             array_multisort($libros, $titulos);
-
-            return $libros;
+            
         }
+
+        if ($_POST['busqueda'] !== "" && $_POST['busqueda'] !== null) {
+            $librosEncontrados = array();
+            $busqueda = $_POST['busqueda'];
+            $busqueda = strtolower($busqueda);
+            foreach ($libros as $libro) {
+                $title = $libro->getTitulo();
+                $title = strtolower($title);
+                if (strpos($title, $busqueda) !== false) {
+                    $librosEncontrados[] = $libro;
+                    $libros = $librosEncontrados;
+                }
+            }
+        }
+        
+        return $libros;
     }
 }
-?>

@@ -28,10 +28,11 @@ echo "</div>";
 
     <section class="cajafiltros">
         <!--CAJA DE BUSQUEDA Y FILTROS-->
-        <p>Búsqueda: <input type="search" /></p>
+        
         <h2>Filtrar por:</h2>
 
         <form method="post">
+            <p>Búsqueda: <input type="search" name="busqueda" /></p>
             <ul>
                 <li>
                     <input type="radio" name="filtro" value="novedad" checked>Novedad
