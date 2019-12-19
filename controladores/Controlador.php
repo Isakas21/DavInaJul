@@ -20,7 +20,7 @@ class Controlador
                 <input id="btnLog" type="submit" name="login" value="login">
             </div>
         </form>';
-            $this->mostrarResultado($resultado, $this->crearLibros(), $this->mostrarLibro());
+            $this->mostrarResultado($resultado, $this->crearLibros(), $this->mostrarLibro(), $this->añadirAlCarrito());
             exit();
         } else {
             // el formulario ya se ha enviado
@@ -43,12 +43,12 @@ class Controlador
                 $resultado = "Bienvenido/a $nombre";
             }
 
-            $this->mostrarResultado($resultado, $this->crearLibros(), $this->mostrarLibro());
+            $this->mostrarResultado($resultado, $this->crearLibros(), $this->mostrarLibro(), $this->añadirAlCarrito());
             exit();
         }
     }
 
-    private function mostrarResultado($resultado, $libros, $detalle)
+    private function mostrarResultado($resultado, $libros, $detalle, $librosCarro)
     {
         // y se muestra la vista del resultado (la plantilla resultado.,php)
         include 'vistas/vista_resultado.php';
@@ -108,14 +108,12 @@ class Controlador
                 $ordenados[] = $libros[$i];
             }
             $libros = $ordenados;
-            
         } elseif ($_POST['filtro'] == 'nombre') {
             foreach ($libros as $libro) {
                 $titulos[] = $libro->getTitulo();
             }
             sort($titulos);
             array_multisort($libros, $titulos);
-            
         }
 
         if ($_POST['busqueda'] !== "" && $_POST['busqueda'] !== null) {
@@ -131,7 +129,26 @@ class Controlador
                 }
             }
         }
-        
+
         return $libros;
+    }
+
+    private function añadirAlCarrito()
+    {
+
+        $librosCarro = "";
+        if (isset($_POST['btnAnadir']) && $_POST['btnAnadir'] == "Alquilar") {
+           
+            if (isset($_POST['cbxLib[]'])) {
+                foreach ($_POST['cbxLib[]'] as $titulo) {
+                    $librosCarro += "<li>$titulo</li>";
+                }
+            } else {
+                $librosCarro =  "No hay nada";
+            }
+        } else {
+            $librosCarro = "No hay Libros seleccionados";
+        }
+        return $librosCarro;
     }
 }

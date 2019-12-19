@@ -12,14 +12,14 @@ echo "</div>";
 
         <!-- LIBROS => Se tendrá que hacer en un bucle -->
         <div>
-            Carrito:
+            Catálogo:
         </div>
         <!--CARRITO-->
         <ul>
             <?php
             foreach ($libros as $libro) {
                 echo "<li>" . $libro->getTitulo() . "<form id='formLib' method='post'><input type='submit' id='btnDet' name='btnDetalles' value='detalles'>
-                        <input type='checkbox' id='cbxLib' value='" . $libro->getTitulo() . "'><input type='hidden' name='detalles' value='" . $libro->getTitulo() . "'>
+                        <input type='checkbox' id='cbxLib' name='cbxLib[]' value='" . $libro->getTitulo() . "'><input type='hidden' name='detalles' value='" . $libro->getTitulo() . "'>
                         </form></li>";
             }
             ?>
@@ -59,7 +59,20 @@ echo "</div>";
 
     </section>
 
-    <input type="submit" id="btnAñadir" name="btnAñadir" value='Añadir'>
+    <section>
+        <div>
+            <ul>
+                <?php
+                    echo "$librosCarro";
+                    
+                ?>
+            </ul>
+        </div>
+    </section>
+
+    <form method="post">
+        <input type="submit" id="btnAñadir" name="btnAnadir" value='Alquilar'>
+    </form>
     <!--BOTON AÑADIR/QUITAR-->
 
 
