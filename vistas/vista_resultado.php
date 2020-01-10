@@ -1,6 +1,21 @@
 <?php
 include "cabecera.php";
 
+if(isset($validador)){
+
+    $errores = $validador->getErrores();
+    if (!empty($errores))
+    {
+        echo "<div class='errores'>";
+        foreach ($errores as $campo => $mensajeError)
+        {
+            echo "<p>$mensajeError</p>\n";
+        }
+        echo "</div>";
+    }
+
+}
+
 echo "<div class='texto' />";
 echo $resultado;
 echo "</div>";

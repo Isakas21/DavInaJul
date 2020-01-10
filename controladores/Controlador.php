@@ -1,5 +1,6 @@
 <?php
 include "clases/libro.php";
+include "helper/ValidadorForm.php";
 class Controlador
 {
     public function run()
@@ -29,12 +30,36 @@ class Controlador
             if (isset($_POST['login'])) {
                 $nombre = $_POST['nombre'];
                 $contraseña = $_POST['pass'];
-                $resultado = "Bienvenido/a $nombre";
-                echo "<input type='hidden' name='login' value='login'>";
 
-                $_SESSION['logeado'] = $_POST['login'];
-                $_SESSION['usuario'] = $nombre;
-                $_SESSION['contraseña'] = $contraseña;
+
+                if (empty($this->validar())) {
+                    echo "<input type='hidden' name='login' value='login'>";
+                    $resultado = "Bienvenido/a $nombre";
+
+                    $_SESSION['logeado'] = $_POST['login'];
+                    $_SESSION['usuario'] = $nombre;
+                    $_SESSION['contraseña'] = $contraseña;
+                } else {
+
+                    $resultado = "";
+
+                    
+                    foreach($this->validar() as $error){
+                        $resultado .= $error . "<br>";
+                    }
+                    
+                    $resultado .= '<form id="form" action="index.php" method="post">
+            <div class="datos">
+                <label>Nombre</label>
+                <input type="text" name="nombre" /><br />
+                <label>Contraseña</label>
+                <input type="password" name="pass" /><br />
+                <label>&nbsp;</label>
+                <input id="btnLog" type="submit" name="login" value="login">
+            </div>
+        </form>';
+
+                }
             } else {
 
                 $_POST['login'] = $_SESSION['logeado'];
@@ -138,9 +163,9 @@ class Controlador
 
         $librosCarro = "";
         if (isset($_POST['btnAnadir']) && $_POST['btnAnadir'] == "Alquilar") {
-           
-            if (isset($_POST['cbxLib[]'])) {
-                foreach ($_POST['cbxLib[]'] as $titulo) {
+
+            if (isset($_POST['cbxLib'])) {
+                foreach ($_POST['cbxLib'] as $titulo) {
                     $librosCarro += "<li>$titulo</li>";
                 }
             } else {
@@ -150,5 +175,25 @@ class Controlador
             $librosCarro = "No hay Libros seleccionados";
         }
         return $librosCarro;
+    }
+
+    private function crearReglasValidacion()
+    {
+        $reglasValidacion = array(
+            "nombre" => array("required" => true),
+            "contraseña" => array("required" => true, "min" => 8)
+        );
+        return $reglasValidacion;
+    }
+
+    private function validar()
+    {
+        $validador = new ValidadorForm();
+        $datosPost = array("nombre" => $_POST['nombre'], "contraseña" => $_POST['pass']);
+        $reglasValidacion = $this->crearReglasValidacion();
+        $validador->validar($datosPost, $reglasValidacion);
+        
+        return $validador->getErrores();
+        
     }
 }
