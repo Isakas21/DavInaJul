@@ -11,16 +11,17 @@ class Controlador
         {
             // primera petición
             // se llama al método para mostrar el formulario inici
+            setcookie('cookieUsuario', "", -300);
             $resultado = '<form id="form" action="index.php" method="post">
-            <div class="datos">
+                <div class="datos">
                 <label>Nombre</label>
-                <input type="text" name="nombre" /><br />
+                <input type="text" name="nombre"><br />
                 <label>Contraseña</label>
-                <input type="password" name="pass" /><br />
+                <input type="password" name="pass"><br />
                 <label>&nbsp;</label>
                 <input id="btnLog" type="submit" name="login" value="login">
-            </div>
-        </form>';
+                </div>
+                </form>';
             $this->mostrarResultado($resultado, $this->crearLibros(), $this->mostrarLibro(), $this->añadirAlCarrito());
             exit();
         } else {
@@ -28,8 +29,8 @@ class Controlador
             // se recogen y procesan los datos
             // se llama al método para mostrar el resultado
             if (isset($_POST['login'])) {
-                $nombre = $_POST['nombre'];
-                $contraseña = $_POST['pass'];
+                $nombre = htmlspecialchars($_POST['nombre']);
+                $contraseña = htmlspecialchars($_POST['pass']);
 
 
                 if (empty($this->validar())) {
@@ -42,23 +43,24 @@ class Controlador
                 } else {
 
                     $resultado = "";
-
                     
-                    foreach($this->validar() as $error){
+                    if (isset($_POST['nombre'])){
+                        $nombre = $_POST['nombre'];
+                    }
+                    foreach ($this->validar() as $error) {
                         $resultado .= $error . "<br>";
                     }
-                    
-                    $resultado .= '<form id="form" action="index.php" method="post">
-            <div class="datos">
-                <label>Nombre</label>
-                <input type="text" name="nombre" /><br />
-                <label>Contraseña</label>
-                <input type="password" name="pass" /><br />
-                <label>&nbsp;</label>
-                <input id="btnLog" type="submit" name="login" value="login">
-            </div>
-        </form>';
 
+                    $resultado .= '<form id="form" action="index.php" method="post">
+                    <div class="datos">
+                    <label>Nombre</label>
+                    <input type="text" name="nombre" value=' . $nombre . '><br />
+                    <label>Contraseña</label>
+                    <input type="password" name="pass" /><br />
+                    <label>&nbsp;</label>
+                    <input id="btnLog" type="submit" name="login" value="login">
+                    </div>
+                    </form>';
                 }
             } else {
 
@@ -143,7 +145,7 @@ class Controlador
 
         if ($_POST['busqueda'] !== "" && $_POST['busqueda'] !== null) {
             $librosEncontrados = array();
-            $busqueda = $_POST['busqueda'];
+            $busqueda = htmlspecialchars($_POST['busqueda']);
             $busqueda = strtolower($busqueda);
             foreach ($libros as $libro) {
                 $title = $libro->getTitulo();
@@ -160,7 +162,6 @@ class Controlador
 
     private function añadirAlCarrito()
     {
-
         $librosCarro = "";
         if (isset($_POST['btnAnadir']) && $_POST['btnAnadir'] == "Alquilar") {
 
@@ -192,8 +193,7 @@ class Controlador
         $datosPost = array("nombre" => $_POST['nombre'], "contraseña" => $_POST['pass']);
         $reglasValidacion = $this->crearReglasValidacion();
         $validador->validar($datosPost, $reglasValidacion);
-        
+
         return $validador->getErrores();
-        
     }
 }
