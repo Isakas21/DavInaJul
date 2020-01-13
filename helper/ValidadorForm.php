@@ -18,6 +18,7 @@ class ValidadorForm
         $this->reglasValidacion = null;
     }
 
+    // @param $fuente: array con los datos a validar - $reglasValidacion: reglas que deben cumplir los campos
     function validar($fuente, $reglasValidacion)
     {
         $this->reglasValidacion = $reglasValidacion;

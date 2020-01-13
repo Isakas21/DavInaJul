@@ -159,7 +159,9 @@ class Controlador
 
         return $libros;
     }
-
+    
+    // @To do - Añade los libros seleccionados a un array para alquilarlos
+    // @return $librosCarro - libros seleccionados 
     private function añadirAlCarrito()
     {
         $librosCarro = "";
@@ -178,6 +180,7 @@ class Controlador
         return $librosCarro;
     }
 
+    // @return Array con las reglas de validación
     private function crearReglasValidacion()
     {
         $reglasValidacion = array(
@@ -187,6 +190,8 @@ class Controlador
         return $reglasValidacion;
     }
 
+    // Comprueba que los campos contienen datos y además, que la contraseña debe tener más de 8 carácteres
+    // @return Array con los mensajes de error si no se han cumplido alguna regla, si esta vacio, los campos son correctos
     private function validar()
     {
         $validador = new ValidadorForm();

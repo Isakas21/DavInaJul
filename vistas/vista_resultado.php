@@ -115,5 +115,8 @@ echo "</div>";
 </html>
 
 <?php
+if (empty($libros)){
+    echo "<script type='text/javascript'> alert('Sin resultados');</script>";
+}
 include "pie.php";
 ?>
