@@ -35,7 +35,7 @@ echo "</div>";
             foreach ($libros as $libro) {
                 echo "<li>" . $libro->getTitulo() . "<form id='formLib' method='post'><input type='submit' id='btnDet' name='btnDetalles' value='detalles'>
                         <input type='checkbox' id='cbxLib' name='cbxLib[]' value='" . $libro->getTitulo() . "'><input type='hidden' name='detalles' value='" . $libro->getTitulo() . "'>
-                        </form></li>";
+                        </form></li><hr/>";
             }
             ?>
         </ul>

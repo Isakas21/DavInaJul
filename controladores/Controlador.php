@@ -15,10 +15,9 @@ class Controlador
             $resultado = '<form id="form" action="index.php" method="post">
                 <div class="datos">
                 <label>Nombre</label>
-                <input type="text" name="nombre"><br />
+                <input class="nom" type="text" name="nombre"><br />
                 <label>Contraseña</label>
-                <input type="password" name="pass"><br />
-                <label>&nbsp;</label>
+                <input class="nom" type="password" name="pass"><br />
                 <input id="btnLog" type="submit" name="login" value="login">
                 </div>
                 </form>';
@@ -54,10 +53,9 @@ class Controlador
                     $resultado .= '<form id="form" action="index.php" method="post">
                     <div class="datos">
                     <label>Nombre</label>
-                    <input type="text" name="nombre" value=' . $nombre . '><br />
+                    <input class="nom" type="text" name="nombre" value=' . $nombre . '><br />
                     <label>Contraseña</label>
-                    <input type="password" name="pass" /><br />
-                    <label>&nbsp;</label>
+                    <input class="nom" type="password" name="pass" /><br />
                     <input id="btnLog" type="submit" name="login" value="login">
                     </div>
                     </form>';

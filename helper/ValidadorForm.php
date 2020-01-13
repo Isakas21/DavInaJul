@@ -30,16 +30,20 @@ class ValidadorForm
                     $valor = StrLen($fuente[$nombreCampo]);
                 }
 
-                if ($nombreRegla === 'min') // otra regla
-                {
-                    if ($valor < 8) { // que tiene que contar las letras de la contraseña
-                        $this->addError($nombreCampo, "La {$nombreCampo} debe tener más de 8 carácteres");
-                    }
-                }
                 if ($nombreRegla === 'required' && $valorRegla) //si es true y requerido
                 {
                     if (empty($valor))
                         $this->addError($nombreCampo, "El valor {$nombreCampo} es requerido");
+                }
+
+                if ($nombreRegla === 'min') // otra regla
+                {
+                    if($valor == 0){
+                        $this->addError($nombreCampo, "El valor {$nombreCampo} es requerido");
+                    }
+                    else if ($valor < 8) { // que tiene que contar las letras de la contraseña
+                        $this->addError($nombreCampo, "La {$nombreCampo} debe tener más de 8 carácteres");
+                    }
                 }
             }
         }
