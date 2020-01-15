@@ -30,15 +30,22 @@ echo "</div>";
             Catálogo:
         </div>
         <!--CARRITO-->
+        <form id='formLib' method='post'>
         <ul>
             <?php
+            
             foreach ($libros as $libro) {
-                echo "<li>" . $libro->getTitulo() . "<form id='formLib' method='post'><input type='submit' id='btnDet' name='btnDetalles' value='detalles'>
-                        <input type='checkbox' id='cbxLib' name='cbxLib[]' value='" . $libro->getTitulo() . "'><input type='hidden' name='detalles' value='" . $libro->getTitulo() . "'>
-                        </form></li><hr/>";
+                echo "<li><label for='cbxLib'>" . $libro->getTitulo() . "<input type='submit' id='btnDet' name='btnDetalles' value='detalles'>
+                <input type='hidden' name='detalles' value='". $libro->getTitulo() . "'>
+                <input type='checkbox' id='cbxLib' name='cbxLib[]' value='" . $libro->getTitulo() . "'>
+                </li><hr/>";
             }
             ?>
+        <li>
+            <input type="submit" name="btnAnadir" value='Alquilar'>
+        </li>
         </ul>
+        </form>
     </section>
 
     <section class="cajafiltros">
@@ -84,10 +91,6 @@ echo "</div>";
             </ul>
         </div>
     </section>
-
-    <form method="post">
-        <input type="submit" id="btnAñadir" name="btnAnadir" value='Alquilar'>
-    </form>
     <!--BOTON AÑADIR/QUITAR-->
 
 
@@ -96,6 +99,7 @@ echo "</div>";
         <div>
             <h3>Novedades</h3>
         </div>
+        <div class="librosNuevos">
         <?php
         $contador = 0;
         for ($i = count($libros) - 1; $i >= 0; $i--) {
@@ -107,6 +111,7 @@ echo "</div>";
         ?>
 
         </article>
+        </div>
     </section>
 </main>
 
@@ -115,8 +120,5 @@ echo "</div>";
 </html>
 
 <?php
-if (empty($libros)){
-    echo "<script type='text/javascript'> alert('Sin resultados');</script>";
-}
 include "pie.php";
 ?>

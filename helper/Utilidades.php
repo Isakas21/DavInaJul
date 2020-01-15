@@ -20,4 +20,10 @@ class Utilidades
         echo "</pre>";
     }
 
+    public static function verificarBotones($valor, $valormenu){
+        if ($valor == $valormenu){
+            echo 'checked = "checked"';
+        }
+    }
+
 }

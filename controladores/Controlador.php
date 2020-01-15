@@ -1,6 +1,7 @@
 <?php
 include "clases/libro.php";
 include "helper/ValidadorForm.php";
+
 class Controlador
 {
     public function run()
@@ -42,8 +43,8 @@ class Controlador
                 } else {
 
                     $resultado = "";
-                    
-                    if (isset($_POST['nombre'])){
+
+                    if (isset($_POST['nombre'])) {
                         $nombre = $_POST['nombre'];
                     }
                     foreach ($this->validar() as $error) {
@@ -53,9 +54,9 @@ class Controlador
                     $resultado .= '<form id="form" action="index.php" method="post">
                     <div class="datos">
                     <label>Nombre</label>
-                    <input class="nom" type="text" name="nombre" value=' . $nombre . '><br />
+                    <input type="text" name="nombre" value=' . $nombre . '><br />
                     <label>Contraseña</label>
-                    <input class="nom" type="password" name="pass" /><br />
+                    <input type="password" name="pass" /><br />
                     <input id="btnLog" type="submit" name="login" value="login">
                     </div>
                     </form>';
@@ -105,13 +106,16 @@ class Controlador
     private function mostrarLibro()
     {
         $detalle = array();
-        if (isset($_POST['detalles']) && $_POST['btnDetalles'] == 'detalles') {
-            $titulo = $_POST['detalles'];
-            $detalle = array();
-            $libros = $this->crearLibros();
-            foreach ($libros as $libro) {
-                if ($libro->getTitulo() == $titulo) {
-                    $detalle[] = array($libro->getTitulo(), $libro->getDescripcion(), $libro->getImagen());
+        if (isset($_POST['detalles']) && isset($_POST['btnDetalles'])) {
+
+            if ($_POST['btnDetalles'] == 'detalles') {
+                $titulo = $_POST['detalles'];
+                $detalle = array();
+                $libros = $this->crearLibros();
+                foreach ($libros as $libro) {
+                    if ($libro->getTitulo() == $titulo) {
+                        $detalle[] = array($libro->getTitulo(), $libro->getDescripcion(), $libro->getImagen());
+                    }
                 }
             }
         } else {
@@ -153,21 +157,26 @@ class Controlador
                     $libros = $librosEncontrados;
                 }
             }
+            if (empty($librosEncontrados)) {
+                echo "<script type='text/javascript'> alert('Sin resultados');</script>";
+            }
         }
 
         return $libros;
     }
-    
+
     // @To do - Añade los libros seleccionados a un array para alquilarlos
     // @return $librosCarro - libros seleccionados 
     private function añadirAlCarrito()
     {
         $librosCarro = "";
+
         if (isset($_POST['btnAnadir']) && $_POST['btnAnadir'] == "Alquilar") {
+
 
             if (isset($_POST['cbxLib'])) {
                 foreach ($_POST['cbxLib'] as $titulo) {
-                    $librosCarro += "<li>$titulo</li>";
+                    $librosCarro .= "<li>$titulo</li>";
                 }
             } else {
                 $librosCarro =  "No hay nada";
@@ -177,6 +186,7 @@ class Controlador
         }
         return $librosCarro;
     }
+
 
     // @return Array con las reglas de validación
     private function crearReglasValidacion()
