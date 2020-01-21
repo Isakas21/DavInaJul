@@ -8,6 +8,7 @@ body{
    /*background-image: url(estante.jpg);*/ 
    /*background-attachment: fixed; */ 
    background-color: whitesmoke;
+   min-width: 700px;
 }
 
 /*header*/
@@ -72,27 +73,6 @@ header div{
     font-size: 150%;
     list-style: none;
 }
-.libros ul li input{
-    margin-left: 1em;
-    width: 50%;
-    transform: scale(2);
-
-}
-#formLib{
-    margin: 0.5em 0;
-}
-
-#btnDet{
-    width: 75px;
-    margin-left: 5em;
-}
-
-#cbxLib{
-    width: 20px;
-    position: relative;
-    left: 50px;
-    top: 2px
-}
 
 /*seccion caja filtros*/
 
@@ -105,7 +85,7 @@ header div{
     border: 1px solid black;
     position: absolute;
     right: 2em;
-    top: 10.2em;
+    top: 8em;
     padding: 1em;
     padding-left: 2em;
 }
@@ -153,10 +133,12 @@ header div{
     margin: 2em;
     margin-right: 1em;
     width: calc(50% - 6em);
+    min-width: 370px;
     border: 1px solid black;
     position: absolute;
     right: 2em;
-    top: 35em;
+    top: 30em;
+    bottom: 1px;
     padding: 2em;
     padding-top: 0;
     padding-left: 1em;
@@ -173,7 +155,6 @@ header div{
     border: 12px solid whitesmoke;
     margin-left: 2em;
     border-radius: 1px;
-    transform: rotate(3deg);
     width: 80%;
     max-width: 250px;
 }
@@ -183,7 +164,6 @@ header div{
     background-color: whitesmoke;
     width: 100%;
     border: 3px solid #670011;
-    transform: rotate(-2deg);
     position: relative;
     float: right;
     padding: 1em;
@@ -193,17 +173,15 @@ header div{
     font-family: "Comic Sans MS", cursive, sans-serif;
 }
 
-#btnAñadir{
-    position: relative;
-    left: 56%;
-    width: 39%;
-    padding: 5px;
-    bottom: 7em;
+#btnAnadir{
+    width: 25%;
+    margin: 0 auto;
 }
 
 .novedades{
     width: 90%;
     margin: 0 auto;
+    margin-top: 150px;
     background-color: #9B0019;
 }
 
@@ -257,10 +235,9 @@ header div{
         background-color: whitesmoke;
         width: 45%;
         border: 3px solid #670011;
-        transform: rotate(-2deg);
         position: absolute;
         right: 1em;
-        top: 12em;
+        top: 17.3em;
         padding: 1em;
     }
 }
@@ -272,5 +249,12 @@ header div{
         bottom: 1em;
         top: 3em;
         padding: 1em;
+    }
+    .ficha{
+        top: 27em;
+        bottom: 3.5em;
+    }
+    .det{
+        display: inline;
     }
 }

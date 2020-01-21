@@ -20,8 +20,9 @@ class Utilidades
         echo "</pre>";
     }
 
-    public static function verificarBotones($valor, $valormenu){
-        if ($valor == $valormenu){
+    public static function verificarCasillas($array, $valormenu){
+        if (!empty($array))
+        if (in_array($valormenu, $array)){
             echo 'checked = "checked"';
         }
     }

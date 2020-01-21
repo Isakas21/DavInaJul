@@ -12,7 +12,6 @@ class Controlador
         {
             // primera petición
             // se llama al método para mostrar el formulario inici
-            setcookie('cookieUsuario', "", -300);
             $resultado = '<form id="form" action="index.php" method="post">
                 <div class="datos">
                 <label>Nombre</label>
@@ -31,15 +30,14 @@ class Controlador
             if (isset($_POST['login'])) {
                 $nombre = htmlspecialchars($_POST['nombre']);
                 $contraseña = htmlspecialchars($_POST['pass']);
-
-
+                
                 if (empty($this->validar())) {
                     echo "<input type='hidden' name='login' value='login'>";
                     $resultado = "Bienvenido/a $nombre";
-
                     $_SESSION['logeado'] = $_POST['login'];
                     $_SESSION['usuario'] = $nombre;
                     $_SESSION['contraseña'] = $contraseña;
+
                 } else {
 
                     $resultado = "";
@@ -69,6 +67,7 @@ class Controlador
                 $resultado = "Bienvenido/a $nombre";
             }
 
+
             $this->mostrarResultado($resultado, $this->crearLibros(), $this->mostrarLibro(), $this->añadirAlCarrito());
             exit();
         }
@@ -85,15 +84,15 @@ class Controlador
     private function crearLibros()
     {
         $libros = array(
-            new Libro("PHP para doomies", "Enseñanzas de PHP", "05-12-2019", "img/php.jpg"),
             new Libro("Java para doomies", "Enseñanzas de Java", "08-12-2019", "img/java.jpg"),
             new Libro("C para doomies", "Enseñanzas de C", "06-12-2019", "img/c.jpg"),
-            new Libro("Java para doomies", "Enseñanzas de HTML", "29-11-2019", "img/html.jpg"),
-            new Libro("Java para doomies", "Enseñanzas de Java", "08-12-2019", "img/java.jpg"),
-            new Libro("PHP para doomies", "Enseñanzas de PHP", "05-12-2019", "img/php.jpg"),
+            new Libro("HTML5 para doomies", "Enseñanzas de HTML", "29-11-2019", "img/html.jpg"),
+            new Libro("Perl para doomies", "Enseñanzas de Java", "08-12-2019", "img/java.jpg"),
+            new Libro("CSS para doomies", "Enseñanzas de PHP", "05-12-2019", "img/php.jpg"),
             new Libro("Html para doomies", "Enseñanzas de HTML", "29-11-2019", "img/html.jpg"),
-            new Libro("Javascript para doomies", "Enseñanzas de HTML", "29-11-2019", "img/js.jpg"),
-            new Libro("Javascript para doomies", "Enseñanzas de C", "06-12-2019", "img/c.jpg")
+            new Libro("JSON para doomies", "Enseñanzas de HTML", "29-11-2019", "img/js.jpg"),
+            new Libro("Javascript para doomies", "Enseñanzas de C", "06-12-2019", "img/c.jpg"),
+            new Libro("PHP para doomies", "Enseñanzas de PHP", "05-12-2019", "img/php.jpg")
         );
         if (isset($_POST['btnFiltro']) && $_POST['btnFiltro'] == 'filtrar') {
             return $this->ordenarLibro($libros);
@@ -129,22 +128,11 @@ class Controlador
     // @return $libros - Array de libros modificado y ordenado
     private function ordenarLibro($libros)
     {
+        
         $ordenados = array();
         $titulos = array();
         $mayor = "";
-        if ($_POST['filtro'] == 'novedad') {
-            for ($i = count($libros) - 1; $i >= 0; $i--) {
-                $ordenados[] = $libros[$i];
-            }
-            $libros = $ordenados;
-        } elseif ($_POST['filtro'] == 'nombre') {
-            foreach ($libros as $libro) {
-                $titulos[] = $libro->getTitulo();
-            }
-            sort($titulos);
-            array_multisort($libros, $titulos);
-        }
-
+        
         if ($_POST['busqueda'] !== "" && $_POST['busqueda'] !== null) {
             $librosEncontrados = array();
             $busqueda = htmlspecialchars($_POST['busqueda']);
@@ -161,6 +149,18 @@ class Controlador
                 echo "<script type='text/javascript'> alert('Sin resultados');</script>";
             }
         }
+        if (isset($_POST['filtro']) && $_POST['filtro'] == 'novedad') {
+            for ($i = count($libros) - 1; $i >= 0; $i--) {
+                $ordenados[] = $libros[$i];
+            }
+            $libros = $ordenados;
+        } elseif (isset($_POST['filtro']) && $_POST['filtro'] == 'nombre') {
+            foreach ($libros as $libro) {
+                $titulos[] = $libro->getTitulo();
+            }
+            sort($titulos);
+            array_multisort($libros, $titulos);
+        }
 
         return $libros;
     }
@@ -169,8 +169,9 @@ class Controlador
     // @return $librosCarro - libros seleccionados 
     private function añadirAlCarrito()
     {
-        $librosCarro = "";
 
+        $librosCarro = "";
+        
         if (isset($_POST['btnAnadir']) && $_POST['btnAnadir'] == "Alquilar") {
 
 
@@ -182,8 +183,9 @@ class Controlador
                 $librosCarro =  "No hay nada";
             }
         } else {
-            $librosCarro = "No hay Libros seleccionados";
+            $librosCarro = "No hay libros seleccionados";
         }
+        
         return $librosCarro;
     }
 
@@ -193,7 +195,9 @@ class Controlador
     {
         $reglasValidacion = array(
             "nombre" => array("required" => true),
-            "contraseña" => array("required" => true, "min" => 8)
+            "contraseña" => array("required" => true, "min" => 8),
+            "filtro" => array("required" => true)
+
         );
         return $reglasValidacion;
     }
@@ -203,7 +207,7 @@ class Controlador
     private function validar()
     {
         $validador = new ValidadorForm();
-        $datosPost = array("nombre" => $_POST['nombre'], "contraseña" => $_POST['pass']);
+        $datosPost = array("nombre" => $_POST['nombre'], "contraseña" => $_POST['pass'], "filtro" => $_POST['filtro']);
         $reglasValidacion = $this->crearReglasValidacion();
         $validador->validar($datosPost, $reglasValidacion);
 

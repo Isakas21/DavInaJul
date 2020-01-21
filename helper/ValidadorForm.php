@@ -45,6 +45,12 @@ class ValidadorForm
                         $this->addError($nombreCampo, "La {$nombreCampo} debe tener más de 8 carácteres");
                     }
                 }
+
+                if ($nombreRegla === 'required' && $valorRegla) //si es true y requerido
+                {
+                    if (empty($valor))
+                        $this->addError($nombreCampo, "El valor {$nombreCampo} es requerido");
+                }
             }
         }
         $this->valido = count($this->errores) == 0;

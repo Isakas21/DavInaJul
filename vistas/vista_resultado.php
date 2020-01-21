@@ -1,5 +1,7 @@
 <?php
 include "cabecera.php";
+include "helper/Utilidades.php";
+include "helper/Input.php";
 
 if(isset($validador)){
 
@@ -13,7 +15,6 @@ if(isset($validador)){
         }
         echo "</div>";
     }
-
 }
 
 echo "<div class='texto' />";
@@ -35,10 +36,12 @@ echo "</div>";
             <?php
             
             foreach ($libros as $libro) {
-                echo "<li><label for='cbxLib'>" . $libro->getTitulo() . "<input type='submit' id='btnDet' name='btnDetalles' value='detalles'>
-                <input type='hidden' name='detalles' value='". $libro->getTitulo() . "'>
-                <input type='checkbox' id='cbxLib' name='cbxLib[]' value='" . $libro->getTitulo() . "'>
-                </li><hr/>";
+                echo "<li><label for='cbxLib'>" . $libro->getTitulo() . "<form method='post' class='det'>
+                <input type='submit' id='btnDet' name='btnDetalles' value='detalles'>
+                <input type='hidden' name='detalles' value='". $libro->getTitulo() . "'></form>
+                <input type='checkbox' id='cbxLib' name='cbxLib[]' value='" . $libro->getTitulo() . "'"; 
+                echo Utilidades::verificarCasillas(Input::get('cbxLib'), $libro->getTitulo()) .
+                "><label></li><hr/>";
             }
             ?>
         <li>
@@ -57,7 +60,7 @@ echo "</div>";
             <p>Búsqueda: <input type="search" name="busqueda" /></p>
             <ul>
                 <li>
-                    <input type="radio" name="filtro" value="novedad" checked>Novedad
+                    <input type="radio" name="filtro" value="novedad">Novedad
                 </li>
                 <li>
                     <input type="radio" name="filtro" value="nombre">Nombre
@@ -86,7 +89,6 @@ echo "</div>";
             <ul>
                 <?php
                     echo "$librosCarro";
-                    
                 ?>
             </ul>
         </div>
