@@ -74,6 +74,9 @@ header div{
     list-style: none;
 }
 
+#formLib ul li:nth-child(1){
+    display: inline;
+}
 /*seccion caja filtros*/
 
 .cajafiltros{

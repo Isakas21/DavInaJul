@@ -36,12 +36,12 @@ echo "</div>";
             <?php
             
             foreach ($libros as $libro) {
-                echo "<li><label for='cbxLib'>" . $libro->getTitulo() . "<form method='post' class='det'>
+                echo "<li><form method='post' class='det'>" . $libro->getTitulo() . "
                 <input type='submit' id='btnDet' name='btnDetalles' value='detalles'>
                 <input type='hidden' name='detalles' value='". $libro->getTitulo() . "'></form>
                 <input type='checkbox' id='cbxLib' name='cbxLib[]' value='" . $libro->getTitulo() . "'"; 
                 echo Utilidades::verificarCasillas(Input::get('cbxLib'), $libro->getTitulo()) .
-                "><label></li><hr/>";
+                "></li><hr/>";
             }
             ?>
         <li>

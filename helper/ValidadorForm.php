@@ -46,11 +46,6 @@ class ValidadorForm
                     }
                 }
 
-                if ($nombreRegla === 'required' && $valorRegla) //si es true y requerido
-                {
-                    if (empty($valor))
-                        $this->addError($nombreCampo, "El valor {$nombreCampo} es requerido");
-                }
             }
         }
         $this->valido = count($this->errores) == 0;

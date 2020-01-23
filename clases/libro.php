@@ -35,5 +35,33 @@ class Libro
         return $this->imagen;
     }
     
+ 
+    public function setTitulo($titulo)
+    {
+        $this->titulo = $titulo;
+
+        return $this;
+    }
+
+    public function setDescripcion($descripcion)
+    {
+        $this->descripcion = $descripcion;
+
+        return $this;
+    }
+
+    public function setFecha($fecha)
+    {
+        $this->fecha = $fecha;
+
+        return $this;
+    }
+
+    public function setImagen($imagen)
+    {
+        $this->imagen = $imagen;
+
+        return $this;
+    }
 }
 ?>

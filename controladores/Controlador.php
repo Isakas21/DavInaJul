@@ -195,8 +195,7 @@ class Controlador
     {
         $reglasValidacion = array(
             "nombre" => array("required" => true),
-            "contraseña" => array("required" => true, "min" => 8),
-            "filtro" => array("required" => true)
+            "contraseña" => array("required" => true, "min" => 8)
 
         );
         return $reglasValidacion;
@@ -207,7 +206,7 @@ class Controlador
     private function validar()
     {
         $validador = new ValidadorForm();
-        $datosPost = array("nombre" => $_POST['nombre'], "contraseña" => $_POST['pass'], "filtro" => $_POST['filtro']);
+        $datosPost = array("nombre" => $_POST['nombre'], "contraseña" => $_POST['pass']);
         $reglasValidacion = $this->crearReglasValidacion();
         $validador->validar($datosPost, $reglasValidacion);
 
