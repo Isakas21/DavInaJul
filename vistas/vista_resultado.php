@@ -2,6 +2,11 @@
 include "cabecera.php";
 include "helper/Utilidades.php";
 include "helper/Input.php";
+include "conexion/config.php";
+
+$conectar = new Conexion;
+
+$conectar->conectar();
 
 if(isset($validador)){
 
@@ -60,7 +65,7 @@ echo "</div>";
             <p>Búsqueda: <input type="search" name="busqueda" /></p>
             <ul>
                 <li>
-                    <input type="radio" name="filtro" value="novedad">Novedad
+                    <input type="radio" name="filtro" value="novedad" checked>Novedad
                 </li>
                 <li>
                     <input type="radio" name="filtro" value="nombre">Nombre
@@ -85,7 +90,9 @@ echo "</div>";
     </section>
 
     <section>
-        <div>
+        <div class="carrito">
+            <h3>Carrito</h3>
+            <hr>
             <ul>
                 <?php
                     echo "$librosCarro";
@@ -111,8 +118,6 @@ echo "</div>";
             }
         }
         ?>
-
-        </article>
         </div>
     </section>
 </main>

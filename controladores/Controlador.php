@@ -83,6 +83,7 @@ class Controlador
     // @return Array $libros que contiene OBJETOS Libro
     private function crearLibros()
     {
+    
         $libros = array(
             new Libro("Java para doomies", "Enseñanzas de Java", "08-12-2019", "img/java.jpg"),
             new Libro("C para doomies", "Enseñanzas de C", "06-12-2019", "img/c.jpg"),
@@ -180,10 +181,10 @@ class Controlador
                     $librosCarro .= "<li>$titulo</li>";
                 }
             } else {
-                $librosCarro =  "No hay nada";
+                $librosCarro =  "No has seleccionado ningun libro";
             }
         } else {
-            $librosCarro = "No hay libros seleccionados";
+            $librosCarro = "El carrito esta vacio";
         }
         
         return $librosCarro;

@@ -181,6 +181,16 @@ header div{
     margin: 0 auto;
 }
 
+.carrito {
+    border: 1px solid black;
+    width: 50%;
+    padding: 1.5em;
+    margin: 1em 1.8em;
+    font-size: 1.2em;
+    background-color: #9B0019;
+    color: white;
+}
+
 .novedades{
     width: 90%;
     margin: 0 auto;
