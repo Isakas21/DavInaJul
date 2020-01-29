@@ -2,11 +2,8 @@
 include "cabecera.php";
 include "helper/Utilidades.php";
 include "helper/Input.php";
-include "conexion/config.php";
+include_once "modelo/database.php";
 
-$conectar = new Conexion;
-
-$conectar->conectar();
 
 if(isset($validador)){
 
@@ -51,6 +48,7 @@ echo "</div>";
             ?>
         <li>
             <input type="submit" name="btnAnadir" value='Alquilar'>
+            <input type="submit" name="btnInsertar" value="Añadir libro">
         </li>
         </ul>
         </form>

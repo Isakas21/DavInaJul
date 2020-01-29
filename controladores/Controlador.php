@@ -1,9 +1,21 @@
 <?php
 include "clases/libro.php";
 include "helper/ValidadorForm.php";
+include "modelo/DaoLibros.php";
+include "modelo/DaoClientes.php";
 
 class Controlador
 {
+
+    private $DaoClientes;
+    private $DaoLibros;
+
+
+    public function __construct(){
+        $this->DaoLibros = new DaoLibros();
+        $this->DaoClientes = new DaoClientes();
+    }
+
     public function run()
     {
         session_start();
@@ -32,12 +44,27 @@ class Controlador
                 $contraseña = htmlspecialchars($_POST['pass']);
                 
                 if (empty($this->validar())) {
-                    echo "<input type='hidden' name='login' value='login'>";
-                    $resultado = "Bienvenido/a $nombre";
-                    $_SESSION['logeado'] = $_POST['login'];
-                    $_SESSION['usuario'] = $nombre;
-                    $_SESSION['contraseña'] = $contraseña;
-
+                    
+                    $datosCliente = $this->DaoClientes->checkLogin($nombre, $contraseña);
+                    if ($datosCliente){
+                        echo "<input type='hidden' name='login' value='login'>";
+                        $resultado = "Bienvenido/a $nombre";
+                        $_SESSION['logeado'] = $_POST['login'];
+                        $_SESSION['usuario'] = $nombre;
+                        $_SESSION['contraseña'] = $contraseña;
+                    } else {
+                        $resultado = "";
+                        $resultado .= '<form id="form" action="index.php" method="post">
+                    <div class="datos">
+                    <label>Nombre</label>
+                    <input type="text" name="nombre" value=' . $nombre . '><br />
+                    <label>Contraseña</label>
+                    <input type="password" name="pass" /><br />
+                    <input id="btnLog" type="submit" name="login" value="login">
+                    </div>
+                    </form>';
+                    }
+                    
                 } else {
 
                     $resultado = "";
@@ -48,6 +75,8 @@ class Controlador
                     foreach ($this->validar() as $error) {
                         $resultado .= $error . "<br>";
                     }
+
+                    
 
                     $resultado .= '<form id="form" action="index.php" method="post">
                     <div class="datos">
@@ -83,18 +112,15 @@ class Controlador
     // @return Array $libros que contiene OBJETOS Libro
     private function crearLibros()
     {
-    
-        $libros = array(
-            new Libro("Java para doomies", "Enseñanzas de Java", "08-12-2019", "img/java.jpg"),
-            new Libro("C para doomies", "Enseñanzas de C", "06-12-2019", "img/c.jpg"),
-            new Libro("HTML5 para doomies", "Enseñanzas de HTML", "29-11-2019", "img/html.jpg"),
-            new Libro("Perl para doomies", "Enseñanzas de Java", "08-12-2019", "img/java.jpg"),
-            new Libro("CSS para doomies", "Enseñanzas de PHP", "05-12-2019", "img/php.jpg"),
-            new Libro("Html para doomies", "Enseñanzas de HTML", "29-11-2019", "img/html.jpg"),
-            new Libro("JSON para doomies", "Enseñanzas de HTML", "29-11-2019", "img/js.jpg"),
-            new Libro("Javascript para doomies", "Enseñanzas de C", "06-12-2019", "img/c.jpg"),
-            new Libro("PHP para doomies", "Enseñanzas de PHP", "05-12-2019", "img/php.jpg")
-        );
+
+        $datosLibros = $this->DaoLibros->mostrarLibros();
+        $libros = array();
+
+        foreach($datosLibros as $datolibro){
+            $libro = new Libro($datolibro[1], $datolibro[2], $datolibro[3], $datolibro[4]);
+            $libros[] = $libro;
+        }
+
         if (isset($_POST['btnFiltro']) && $_POST['btnFiltro'] == 'filtrar') {
             return $this->ordenarLibro($libros);
         }
@@ -213,4 +239,25 @@ class Controlador
 
         return $validador->getErrores();
     }
+
+    
+    public function crearLibro()
+    {
+        $titulo = htmlspecialchars(stripslashes($_POST['titulo']));
+        $descripcion = htmlspecialchars(stripslashes($_POST['descripcion']));
+        $fecha = 'CURRENT_DATE';
+        $imagen = htmlspecialchars(stripslashes($_POST['imagen']));
+
+        if($this->DaoLibros->existeLibro($titulo,$descripcion)){
+
+            echo "existe";
+        }
+        else{
+        $libro = new Libro($titulo,$descripcion,$fecha,$imagen);
+        echo "no existe";
+        return $libro;
+        }
+        
+    }
+
 }
