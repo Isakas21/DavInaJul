@@ -1,6 +1,7 @@
 <?php
 include "clases/libro.php";
 include "helper/ValidadorForm.php";
+include "helper/ValidadorLibro.php";
 include "modelo/DaoLibros.php";
 include "modelo/DaoClientes.php";
 
@@ -11,7 +12,8 @@ class Controlador
     private $DaoLibros;
 
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->DaoLibros = new DaoLibros();
         $this->DaoClientes = new DaoClientes();
     }
@@ -42,11 +44,11 @@ class Controlador
             if (isset($_POST['login'])) {
                 $nombre = htmlspecialchars($_POST['nombre']);
                 $contraseña = htmlspecialchars($_POST['pass']);
-                
+
                 if (empty($this->validar())) {
-                    
+
                     $datosCliente = $this->DaoClientes->checkLogin($nombre, $contraseña);
-                    if ($datosCliente){
+                    if ($datosCliente) {
                         echo "<input type='hidden' name='login' value='login'>";
                         $resultado = "Bienvenido/a $nombre";
                         $_SESSION['logeado'] = $_POST['login'];
@@ -64,7 +66,6 @@ class Controlador
                     </div>
                     </form>';
                     }
-                    
                 } else {
 
                     $resultado = "";
@@ -76,7 +77,7 @@ class Controlador
                         $resultado .= $error . "<br>";
                     }
 
-                    
+
 
                     $resultado .= '<form id="form" action="index.php" method="post">
                     <div class="datos">
@@ -94,6 +95,30 @@ class Controlador
                 $nombre = $_SESSION['usuario'];
                 $contraseña = $_SESSION['contraseña'];
                 $resultado = "Bienvenido/a $nombre";
+
+                if (isset($_POST['btnInsertar']) && $_POST['btnInsertar'] == "Insertar") {
+
+                    $titulo = $_POST['txtTitulo'];
+                    $descripcion = $_POST['txtDescripcion'];
+
+                    if (empty($this->validar())) {
+
+                        $libreria = new DaoLibros();
+
+                        if (!$libreria->existeLibro($titulo, $descripcion)) {
+
+                            echo "ahora se inserta un libro";
+                        }
+                        else{
+                            echo "el libro ya existe";
+                        }
+                    } else {
+                        
+                        foreach ($this->validar() as $error) {
+                            $resultado .="<br>". $error;
+                        }
+                    }
+                }
             }
 
 
@@ -116,7 +141,7 @@ class Controlador
         $datosLibros = $this->DaoLibros->mostrarLibros();
         $libros = array();
 
-        foreach($datosLibros as $datolibro){
+        foreach ($datosLibros as $datolibro) {
             $libro = new Libro($datolibro[1], $datolibro[2], $datolibro[3], $datolibro[4]);
             $libros[] = $libro;
         }
@@ -155,11 +180,11 @@ class Controlador
     // @return $libros - Array de libros modificado y ordenado
     private function ordenarLibro($libros)
     {
-        
+
         $ordenados = array();
         $titulos = array();
         $mayor = "";
-        
+
         if ($_POST['busqueda'] !== "" && $_POST['busqueda'] !== null) {
             $librosEncontrados = array();
             $busqueda = htmlspecialchars($_POST['busqueda']);
@@ -198,7 +223,7 @@ class Controlador
     {
 
         $librosCarro = "";
-        
+
         if (isset($_POST['btnAnadir']) && $_POST['btnAnadir'] == "Alquilar") {
 
 
@@ -212,7 +237,7 @@ class Controlador
         } else {
             $librosCarro = "El carrito esta vacio";
         }
-        
+
         return $librosCarro;
     }
 
@@ -220,27 +245,49 @@ class Controlador
     // @return Array con las reglas de validación
     private function crearReglasValidacion()
     {
-        $reglasValidacion = array(
-            "nombre" => array("required" => true),
-            "contraseña" => array("required" => true, "min" => 8)
-
-        );
+        if (isset($_POST['btnInsertar']) && $_POST['btnInsertar'] == "Insertar") {
+            $reglasValidacion = array(
+                "titulo" => array("required" => true),
+                "descripcion" => array("required" => true),
+                "imagen" => array("required" => false)
+            );
+        } else {
+            $reglasValidacion = array(
+                "nombre" => array("required" => true),
+                "contraseña" => array("required" => true, "min" => 8)
+            );
+        }
         return $reglasValidacion;
     }
+
+
 
     // Comprueba que los campos contienen datos y además, que la contraseña debe tener más de 8 carácteres
     // @return Array con los mensajes de error si no se han cumplido alguna regla, si esta vacio, los campos son correctos
     private function validar()
     {
-        $validador = new ValidadorForm();
-        $datosPost = array("nombre" => $_POST['nombre'], "contraseña" => $_POST['pass']);
-        $reglasValidacion = $this->crearReglasValidacion();
-        $validador->validar($datosPost, $reglasValidacion);
+
+        if (isset($_POST['btnInsertar']) && $_POST['btnInsertar'] == "Insertar") {
+
+            $validador = new ValidadorLibro();
+
+            $datosPost = array("titulo" => $_POST['txtTitulo'], "descripcion" => $_POST['txtDescripcion'], "txtImagen" => $_POST['txtImagen']);
+            $reglasValidacion = $this->crearReglasValidacion();
+            $validador->validar($datosPost, $reglasValidacion);
+        } else {
+
+            $validador = new ValidadorForm();
+
+            $datosPost = array("nombre" => $_POST['nombre'], "contraseña" => $_POST['pass']);
+            $reglasValidacion = $this->crearReglasValidacion();
+            $validador->validar($datosPost, $reglasValidacion);
+        }
 
         return $validador->getErrores();
     }
 
-    
+
+
     public function crearLibro()
     {
         $titulo = htmlspecialchars(stripslashes($_POST['titulo']));
@@ -248,16 +295,13 @@ class Controlador
         $fecha = 'CURRENT_DATE';
         $imagen = htmlspecialchars(stripslashes($_POST['imagen']));
 
-        if($this->DaoLibros->existeLibro($titulo,$descripcion)){
+        if ($this->DaoLibros->existeLibro($titulo, $descripcion)) {
 
             echo "existe";
+        } else {
+            $libro = new Libro($titulo, $descripcion, $fecha, $imagen);
+            echo "no existe";
+            return $libro;
         }
-        else{
-        $libro = new Libro($titulo,$descripcion,$fecha,$imagen);
-        echo "no existe";
-        return $libro;
-        }
-        
     }
-
 }

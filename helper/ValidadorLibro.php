@@ -4,7 +4,7 @@
  *       
  */
 //SI
-class ValidadorForm
+class ValidadorLibro
 {
 
     private $errores;
@@ -34,16 +34,6 @@ class ValidadorForm
                 {
                     if (empty($valor))
                         $this->addError($nombreCampo, "El valor {$nombreCampo} es requerido");
-                }
-
-                if ($nombreRegla === 'min') // otra regla
-                {
-                    if(empty($valor)){
-                        $this->addError($nombreCampo, "El valor {$nombreCampo} es requerido");
-                    }
-                    else if ($valor < 8) { // que tiene que contar las letras de la contraseña
-                        $this->addError($nombreCampo, "La {$nombreCampo} debe tener más de 8 carácteres");
-                    }
                 }
 
             }

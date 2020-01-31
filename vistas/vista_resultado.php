@@ -48,7 +48,12 @@ echo "</div>";
             ?>
         <li>
             <input type="submit" name="btnAnadir" value='Alquilar'>
-            <input type="submit" name="btnInsertar" value="Añadir libro">
+        </li>
+        <li>
+            Titulo: <input type="text" name="txtTitulo"><br>
+            Descipcion: <input type="text" name="txtDescripcion"><br>
+            Imagen: <input type="text" name="txtImagen"><br>
+            <input type="submit" name="btnInsertar" value="Insertar">
         </li>
         </ul>
         </form>
