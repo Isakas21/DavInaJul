@@ -53,6 +53,7 @@ class DaoLibros
 
     public function insertarLibros($libro)
     {
+        
         $insertar = "INSERT INTO `libros` (`Titulo`,`Descripcion`,`Fecha`,`Imagen`)
         VALUES ('','Libro para aprender jQuery',CURRENT_DATE,'img/jQuery.jpg')";
     }
