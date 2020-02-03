@@ -36,6 +36,11 @@ class ValidadorLibro
                         $this->addError($nombreCampo, "El valor {$nombreCampo} es requerido");
                 }
 
+            /*    if ($nombreRegla === 'formato' && $valorRegla)
+                {
+                    if()
+                }
+                */
             }
         }
         $this->valido = count($this->errores) == 0;

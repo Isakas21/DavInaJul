@@ -100,17 +100,19 @@ class Controlador
 
                     $titulo = $_POST['txtTitulo'];
                     $descripcion = $_POST['txtDescripcion'];
+                    $imagen = $_POST['txtImagen'];
 
                     if (empty($this->validar())) {
 
                         $libreria = new DaoLibros();
 
                         if (!$libreria->existeLibro($titulo, $descripcion)) {
+                            $libro = new Libro($titulo, $descripcion, "CURRENT_DATE","img/$imagen");
+                            $libreria->insertarLibros($libro);
 
-                            echo "ahora se inserta un libro";
-                        }
-                        else{
-                            echo "el libro ya existe";
+                            $resultado .="<br>El libro se inserto correctamente"; 
+                        } else{
+                            $resultado .="<br>El libro ya existe"; 
                         }
                     } else {
                         
@@ -249,7 +251,7 @@ class Controlador
             $reglasValidacion = array(
                 "titulo" => array("required" => true),
                 "descripcion" => array("required" => true),
-                "imagen" => array("required" => false)
+                "imagen" => array("required" => false, "formato" => true)
             );
         } else {
             $reglasValidacion = array(

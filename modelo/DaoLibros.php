@@ -30,7 +30,7 @@ class DaoLibros
         }
     }
 
-    
+
 
     public function existeLibro($titulo, $descripcion)
     {
@@ -41,20 +41,22 @@ class DaoLibros
             $this->db->desconectar();
             echo "<p>Error en la consulta.</p>";
         } else {
-            $listaLibros = $result->fetchAll();
-            if(in_array($titulo, $listaLibros) && in_array($descripcion, $listaLibros)){
-                return true;
+    
+            $listaLibros = $result->fetchAll(PDO::FETCH_ASSOC);
+            foreach ($listaLibros as $libro) {
+                if ($libro['Titulo'] == $titulo && $libro['Descripcion'] == $descripcion) {
+                    return true;
+                }
             }
-            else{
-                return false;
-            }
+            return false;
         }
     }
 
     public function insertarLibros($libro)
     {
-        
-        $insertar = "INSERT INTO `libros` (`Titulo`,`Descripcion`,`Fecha`,`Imagen`)
-        VALUES ('','Libro para aprender jQuery',CURRENT_DATE,'img/jQuery.jpg')";
+        $this->db->conectar();
+        $insertar = "INSERT INTO `libros` (`Titulo`,`Descripcion`,`Fecha`,`Imagen`) VALUES ("."'". $libro->getTitulo()."','".$libro->getDescripcion()."',".$libro->getFecha().",'".$libro->getImagen()."'".")";
+        $args = array();
+        $result = $this->db->ejecutarSqlActualizacion($insertar,$args);
     }
 }

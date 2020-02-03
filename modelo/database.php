@@ -33,8 +33,9 @@ class Database
         return $result;
     }
 
-    public function ejecutarSqlActualizacion($sql)
+    public function ejecutarSqlActualizacion($sql,$args)
     {
         $result = $this->conectar()->prepare($sql);
+        $result->execute($args);
     }
 }
