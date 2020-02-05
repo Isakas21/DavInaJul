@@ -40,7 +40,8 @@ echo "</div>";
             foreach ($libros as $libro) {
                 echo "<li><form method='post' class='det'>" . $libro->getTitulo() . "
                 <input type='submit' id='btnDet' name='btnDetalles' value='detalles'>
-                <input type='hidden' name='detalles' value='". $libro->getTitulo() . "'></form>
+                <input type='hidden' name='detalles' value='". $libro->getTitulo() . "'>
+                <input type='submit' name='btnBorrar' value='borrar'></form>
                 <input type='checkbox' id='cbxLib' name='cbxLib[]' value='" . $libro->getTitulo() . "'"; 
                 echo Utilidades::verificarCasillas(Input::get('cbxLib'), $libro->getTitulo()) .
                 "></li><hr/>";
@@ -54,6 +55,7 @@ echo "</div>";
             Descipcion: <input type="text" name="txtDescripcion"><br>
             Imagen: <input type="text" name="txtImagen"><br>
             <input type="submit" name="btnInsertar" value="Insertar">
+            
         </li>
         </ul>
         </form>

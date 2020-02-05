@@ -33,6 +33,7 @@ class Controlador
                 <label>Contraseña</label>
                 <input class="nom" type="password" name="pass"><br />
                 <input id="btnLog" type="submit" name="login" value="login">
+                <input id="btnReg" type="submit" name="registrarse" value="registrarse">
                 </div>
                 </form>';
             $this->mostrarResultado($resultado, $this->crearLibros(), $this->mostrarLibro(), $this->añadirAlCarrito());
@@ -63,6 +64,7 @@ class Controlador
                     <label>Contraseña</label>
                     <input type="password" name="pass" /><br />
                     <input id="btnLog" type="submit" name="login" value="login">
+                    <input id="btnReg" type="submit" name="registrarse" value="registrarse">
                     </div>
                     </form>';
                     }
@@ -77,8 +79,6 @@ class Controlador
                         $resultado .= $error . "<br>";
                     }
 
-
-
                     $resultado .= '<form id="form" action="index.php" method="post">
                     <div class="datos">
                     <label>Nombre</label>
@@ -86,6 +86,7 @@ class Controlador
                     <label>Contraseña</label>
                     <input type="password" name="pass" /><br />
                     <input id="btnLog" type="submit" name="login" value="login">
+                    <input id="btnReg" type="submit" name="registrarse" value="registrarse">
                     </div>
                     </form>';
                 }
@@ -96,28 +97,36 @@ class Controlador
                 $contraseña = $_SESSION['contraseña'];
                 $resultado = "Bienvenido/a $nombre";
 
+                if (isset($_POST['btnBorrar']) && $_POST['btnBorrar'] == 'borrar') {
+                    $this->borrarLibro();
+                }
+
                 if (isset($_POST['btnInsertar']) && $_POST['btnInsertar'] == "Insertar") {
 
                     $titulo = $_POST['txtTitulo'];
                     $descripcion = $_POST['txtDescripcion'];
                     $imagen = $_POST['txtImagen'];
 
+
                     if (empty($this->validar())) {
 
                         $libreria = new DaoLibros();
+                        if ($imagen == "") {
+                            $imagen = "logo.jpg";
+                        }
 
-                        if (!$libreria->existeLibro($titulo, $descripcion)) {
-                            $libro = new Libro($titulo, $descripcion, "CURRENT_DATE","img/$imagen");
+                        if (!$libreria->existeLibro($titulo)) {
+                            $libro = new Libro($titulo, $descripcion, "CURRENT_DATE", "img/$imagen");
                             $libreria->insertarLibros($libro);
 
-                            $resultado .="<br>El libro se inserto correctamente"; 
-                        } else{
-                            $resultado .="<br>El libro ya existe"; 
+                            $resultado .= "<br>El libro se inserto correctamente";
+                        } else {
+                            $resultado .= "<br>El libro ya existe";
                         }
                     } else {
-                        
+
                         foreach ($this->validar() as $error) {
-                            $resultado .="<br>". $error;
+                            $resultado .= "<br>" . $error;
                         }
                     }
                 }
@@ -172,7 +181,7 @@ class Controlador
                 }
             }
         } else {
-            $detalle[] = array("Titulo del libro", "Descripción del libro", "img/logo.png");
+            $detalle[] = array("Titulo de libro", "Para insertar o borrar libros, debe estar registrado en nuestra base de datos", "img/logo.jpg");
         }
         return $detalle;
     }
@@ -272,8 +281,11 @@ class Controlador
         if (isset($_POST['btnInsertar']) && $_POST['btnInsertar'] == "Insertar") {
 
             $validador = new ValidadorLibro();
-
-            $datosPost = array("titulo" => $_POST['txtTitulo'], "descripcion" => $_POST['txtDescripcion'], "txtImagen" => $_POST['txtImagen']);
+            $imagen = $_POST['txtImagen'];
+            if ($imagen == "") {
+                $imagen = "logo.jpg";
+            }
+            $datosPost = array("titulo" => $_POST['txtTitulo'], "descripcion" => $_POST['txtDescripcion'], "imagen" => $imagen);
             $reglasValidacion = $this->crearReglasValidacion();
             $validador->validar($datosPost, $reglasValidacion);
         } else {
@@ -288,22 +300,10 @@ class Controlador
         return $validador->getErrores();
     }
 
-
-
-    public function crearLibro()
+    public function borrarLibro()
     {
-        $titulo = htmlspecialchars(stripslashes($_POST['titulo']));
-        $descripcion = htmlspecialchars(stripslashes($_POST['descripcion']));
-        $fecha = 'CURRENT_DATE';
-        $imagen = htmlspecialchars(stripslashes($_POST['imagen']));
-
-        if ($this->DaoLibros->existeLibro($titulo, $descripcion)) {
-
-            echo "existe";
-        } else {
-            $libro = new Libro($titulo, $descripcion, $fecha, $imagen);
-            echo "no existe";
-            return $libro;
-        }
+        $titulo = htmlspecialchars(stripslashes($_POST['detalles']));
+        $this->DaoLibros->borrarLibro($titulo);
+        
     }
 }

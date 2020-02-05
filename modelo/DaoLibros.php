@@ -32,7 +32,7 @@ class DaoLibros
 
 
 
-    public function existeLibro($titulo, $descripcion)
+    public function existeLibro($titulo)
     {
         $this->db->conectar();
         $consulta = "SELECT * FROM `libros`";
@@ -44,10 +44,12 @@ class DaoLibros
     
             $listaLibros = $result->fetchAll(PDO::FETCH_ASSOC);
             foreach ($listaLibros as $libro) {
-                if ($libro['Titulo'] == $titulo && $libro['Descripcion'] == $descripcion) {
+                if ($libro['Titulo'] == $titulo) {
+                    $this->db->desconectar();
                     return true;
                 }
             }
+            $this->db->desconectar();
             return false;
         }
     }
@@ -58,5 +60,15 @@ class DaoLibros
         $insertar = "INSERT INTO `libros` (`Titulo`,`Descripcion`,`Fecha`,`Imagen`) VALUES ("."'". $libro->getTitulo()."','".$libro->getDescripcion()."',".$libro->getFecha().",'".$libro->getImagen()."'".")";
         $args = array();
         $result = $this->db->ejecutarSqlActualizacion($insertar,$args);
+        $this->db->desconectar();
+    }
+
+    public function borrarLibro($titulo)
+    {
+        $this->db->conectar();
+        $borrar = "DELETE FROM `libros` WHERE `titulo` =  "."'".$titulo."'";
+        $args = array();
+        $result = $this->db->ejecutarSqlActualizacion($borrar,$args);
+        $this->db->desconectar();
     }
 }

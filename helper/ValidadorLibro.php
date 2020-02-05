@@ -36,11 +36,16 @@ class ValidadorLibro
                         $this->addError($nombreCampo, "El valor {$nombreCampo} es requerido");
                 }
 
-            /*    if ($nombreRegla === 'formato' && $valorRegla)
-                {
-                    if()
+
+                if ($nombreRegla === 'formato' && $valorRegla) {
+                    if (strpos($fuente[$nombreCampo], ".")) {
+                        if (substr($fuente[$nombreCampo], strpos($fuente[$nombreCampo], "."), $valor) !== ".jpg") {
+                            $this->addError($nombreCampo, "La extension debe ser .jpg");
+                        }
+                    } else {
+                        $this->addError($nombreCampo, "La imagen debe contener un formato .jpg");
+                    }
                 }
-                */
             }
         }
         $this->valido = count($this->errores) == 0;
