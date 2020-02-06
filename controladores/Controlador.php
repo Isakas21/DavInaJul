@@ -22,7 +22,7 @@ class Controlador
     {
         session_start();
 
-        if (!isset($_POST['login']) && !isset($_SESSION['logeado']))  //no se ha enviado el formulario
+        if (!isset($_POST['login']) && !isset($_SESSION['logeado']) && !isset($_POST['registrarse']))  //no se ha enviado el formulario
         {
             // primera petición
             // se llama al método para mostrar el formulario inici
@@ -42,14 +42,14 @@ class Controlador
             // el formulario ya se ha enviado
             // se recogen y procesan los datos
             // se llama al método para mostrar el resultado
-            if (isset($_POST['login'])) {
+            if (isset($_POST['login']) || isset($_POST['registrarse'])) {
                 $nombre = htmlspecialchars($_POST['nombre']);
                 $contraseña = htmlspecialchars($_POST['pass']);
 
                 if (empty($this->validar())) {
 
                     $datosCliente = $this->DaoClientes->checkLogin($nombre, $contraseña);
-                    if ($datosCliente) {
+                    if ($datosCliente && isset($_POST['login'])) {
                         echo "<input type='hidden' name='login' value='login'>";
                         $resultado = "Bienvenido/a $nombre";
                         $_SESSION['logeado'] = $_POST['login'];
@@ -68,6 +68,16 @@ class Controlador
                     </div>
                     </form>';
                     }
+                    
+                    if (isset($_POST['registrarse']) && $_POST['registrarse'] == 'registrarse'){
+                        if (!$this->DaoClientes->checkLogin($nombre, $contraseña)){
+                            $this->DaoClientes->registrarse($nombre, $contraseña);
+                        }
+                        else {
+                            $resultado .= "El usuario ya existe en la base de datos";
+                        }
+                    }
+
                 } else {
 
                     $resultado = "";
@@ -106,7 +116,6 @@ class Controlador
                     $titulo = $_POST['txtTitulo'];
                     $descripcion = $_POST['txtDescripcion'];
                     $imagen = $_POST['txtImagen'];
-
 
                     if (empty($this->validar())) {
 

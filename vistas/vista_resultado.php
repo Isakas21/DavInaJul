@@ -51,11 +51,11 @@ echo "</div>";
             <input type="submit" name="btnAnadir" value='Alquilar'>
         </li>
         <li>
-            Titulo: <input type="text" name="txtTitulo"><br>
-            Descipcion: <input type="text" name="txtDescripcion"><br>
+            Titulo: <input type="text" name="txtTitulo">
+            <br>
+            Descripcion: <input type="text" name="txtDescripcion"><br>
             Imagen: <input type="text" name="txtImagen"><br>
             <input type="submit" name="btnInsertar" value="Insertar">
-            
         </li>
         </ul>
         </form>
