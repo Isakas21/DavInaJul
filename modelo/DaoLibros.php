@@ -13,6 +13,15 @@ class DaoLibros
         $this->db = new Database();
     }
 
+    /**
+     * mostrarLibros.
+     *
+     * @author	Davinajul
+     * @since	v0.0.1
+     * @version	v1.0.0	Friday, February 7th, 2020.
+     * @access	public
+     * @return	void
+     */
     public function mostrarLibros()
     {
         $this->db->conectar();
@@ -32,6 +41,16 @@ class DaoLibros
 
 
 
+    /**
+     * existeLibro.
+     *
+     * @author	Davinajul
+     * @since	v0.0.1
+     * @version	v1.0.0	Friday, February 7th, 2020.
+     * @access	public
+     * @param	mixed	$titulo	
+     * @return	void
+     */
     public function existeLibro($titulo)
     {
         $this->db->conectar();
@@ -54,6 +73,16 @@ class DaoLibros
         }
     }
 
+    /**
+     * insertarLibros.
+     *
+     * @author	Davinajul
+     * @since	v0.0.1
+     * @version	v1.0.0	Friday, February 7th, 2020.
+     * @access	public
+     * @param	mixed	$libro	
+     * @return	void
+     */
     public function insertarLibros($libro)
     {
         $this->db->conectar();
@@ -63,6 +92,16 @@ class DaoLibros
         $this->db->desconectar();
     }
 
+    /**
+     * borrarLibro.
+     *
+     * @author	Davinajul
+     * @since	v0.0.1
+     * @version	v1.0.0	Friday, February 7th, 2020.
+     * @access	public
+     * @param	mixed	$titulo	
+     * @return	void
+     */
     public function borrarLibro($titulo)
     {
         $this->db->conectar();

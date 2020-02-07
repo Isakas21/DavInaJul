@@ -1,6 +1,7 @@
 <?php
 
 include_once "modelo/database.php";
+include_once "clases/clientes.php";
 
 class DaoClientes{
 
@@ -11,12 +12,23 @@ class DaoClientes{
        $this->db = new Database();
     }
 
-    public function checkLogin($nombre, $password){
+    /**
+     * Comprueba si el usuario insertado esta en la base de datos.
+     *
+     * @author	Davinajul
+     * @since	v0.0.1
+     * @version	v1.0.0	Friday, February 7th, 2020.
+     * @access	public
+     * @param	mixed	$cliente	
+     * @return	void
+     */
+    public function checkLogin($cliente){
         $this->db->conectar();
+        $nombre = $cliente->getNombre();
+        $password = $cliente->getContraseña();
         $consulta = "SELECT `Nombre` FROM `Clientes` WHERE Nombre = '$nombre' AND Password = '$password'";
         $result = $this->db->ejecutarSql($consulta);
         if(!$result->fetch()){
-            echo "<script type='text/javascript'> alert('Usuario/Contraseña incorrecto');</script>";
             $this->db->desconectar();
             return false;
         }
@@ -26,8 +38,21 @@ class DaoClientes{
         }
     }
 
-    public function registrarse($nombre, $password){
+    /**
+     * Añade el usuario insertado a la base de datos.
+     *
+     * @author	Davinajul
+     * @since	v0.0.1
+     * @version	v1.0.0	Friday, February 7th, 2020.
+     * @access	public
+     * @param	mixed	$cliente	
+     * @return	void
+     */
+
+    public function registrarse($cliente){
         $this->db->conectar();
+        $nombre = $cliente->getNombre();
+        $password = $cliente->getContraseña();
         $insertar = "INSERT INTO `Clientes` (`Nombre`,`Password`) VALUES ('$nombre','$password')";
         $args = array();
         $result = $this->db->ejecutarSqlActualizacion($insertar,$args);

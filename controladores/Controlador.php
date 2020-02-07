@@ -1,5 +1,6 @@
 <?php
 include "clases/libro.php";
+include "clases/clientes.php";
 include "helper/ValidadorForm.php";
 include "helper/ValidadorLibro.php";
 include "modelo/DaoLibros.php";
@@ -45,36 +46,42 @@ class Controlador
             if (isset($_POST['login']) || isset($_POST['registrarse'])) {
                 $nombre = htmlspecialchars($_POST['nombre']);
                 $contraseña = htmlspecialchars($_POST['pass']);
-
+                $cliente = new Cliente($nombre, $contraseña);
+                
                 if (empty($this->validar())) {
 
-                    $datosCliente = $this->DaoClientes->checkLogin($nombre, $contraseña);
+                    $datosCliente = $this->DaoClientes->checkLogin($cliente);
                     if ($datosCliente && isset($_POST['login'])) {
                         echo "<input type='hidden' name='login' value='login'>";
-                        $resultado = "Bienvenido/a $nombre";
+                        $resultado = "Bienvenido/a ". $cliente->getNombre();
                         $_SESSION['logeado'] = $_POST['login'];
-                        $_SESSION['usuario'] = $nombre;
-                        $_SESSION['contraseña'] = $contraseña;
+                        $_SESSION['usuario'] = $cliente->getNombre();
+                        $_SESSION['contraseña'] = $cliente->getContraseña();
                     } else {
                         $resultado = "";
                         $resultado .= '<form id="form" action="index.php" method="post">
                     <div class="datos">
                     <label>Nombre</label>
-                    <input type="text" name="nombre" value=' . $nombre . '><br />
+                    <input type="text" name="nombre" value=' . $cliente->getNombre() . '><br />
                     <label>Contraseña</label>
                     <input type="password" name="pass" /><br />
                     <input id="btnLog" type="submit" name="login" value="login">
                     <input id="btnReg" type="submit" name="registrarse" value="registrarse">
                     </div>
                     </form>';
+
+                        if (isset($_POST['login'])){
+                            $resultado .= '<br>Usuario/Contraseña incorrecto';
+                        }
                     }
                     
                     if (isset($_POST['registrarse']) && $_POST['registrarse'] == 'registrarse'){
-                        if (!$this->DaoClientes->checkLogin($nombre, $contraseña)){
-                            $this->DaoClientes->registrarse($nombre, $contraseña);
+                        if (!$this->DaoClientes->checkLogin($cliente)){
+                            $this->DaoClientes->registrarse($cliente);
+                            $resultado .= "<br>El usuario ha sido añadido a la base de datos";
                         }
                         else {
-                            $resultado .= "El usuario ya existe en la base de datos";
+                            $resultado .= "<br>El usuario ya existe en la base de datos";
                         }
                     }
 
@@ -109,6 +116,7 @@ class Controlador
 
                 if (isset($_POST['btnBorrar']) && $_POST['btnBorrar'] == 'borrar') {
                     $this->borrarLibro();
+                    $resultado .= "<br>El libro ". $_POST['detalles']. " ha sido borrado";
                 }
 
                 if (isset($_POST['btnInsertar']) && $_POST['btnInsertar'] == "Insertar") {
@@ -153,8 +161,15 @@ class Controlador
         include 'vistas/vista_resultado.php';
     }
 
-    // Crea los datos con los que trabajará el formulario
-    // @return Array $libros que contiene OBJETOS Libro
+    /**
+     * Crea los datos con los que trabajará el formulario
+     *
+     * @author	Davinajul
+     * @since	v0.0.1
+     * @version	v1.0.0	Friday, February 7th, 2020.
+     * @access	private
+     * @return	mixed
+     */
     private function crearLibros()
     {
 
@@ -172,8 +187,15 @@ class Controlador
         return $libros;
     }
 
-    // Muestra los detalles del libro seleccionado en el botón Detalles del formulario 
-    // @return Array $detalle que contiene titulo, descripción y portada del libro
+    /**
+     * Muestra los detalles del libro seleccionado en el botón Detalles del formulario
+     *
+     * @author	Davinajul
+     * @since	v0.0.1
+     * @version	v1.0.0	Friday, February 7th, 2020.	
+     * @access	private
+     * @return	mixed
+     */
     private function mostrarLibro()
     {
         $detalle = array();
@@ -195,9 +217,16 @@ class Controlador
         return $detalle;
     }
 
-    // Actualiza la página y ordena un array según el filtro utilizado
-    // @param $libros - Array de libros a ordenar
-    // @return $libros - Array de libros modificado y ordenado
+    /**
+     * Actualiza la página y ordena un array según el filtro utilizado
+     *
+     * @author	Davinajul
+     * @since	v0.0.1
+     * @version	v1.0.0	Friday, February 7th, 2020.
+     * @access	private
+     * @param	mixed	$libros	
+     * @return	mixed
+     */
     private function ordenarLibro($libros)
     {
 
@@ -237,8 +266,17 @@ class Controlador
         return $libros;
     }
 
-    // @To do - Añade los libros seleccionados a un array para alquilarlos
-    // @return $librosCarro - libros seleccionados 
+    
+
+    /**
+     * Añade los libros al carrito para alquilar
+     *
+     * @author	Davinajul
+     * @since	v0.0.1
+     * @version	v1.0.0	Friday, February 7th, 2020.
+     * @access	private
+     * @return	mixed
+     */
     private function añadirAlCarrito()
     {
 
@@ -262,7 +300,15 @@ class Controlador
     }
 
 
-    // @return Array con las reglas de validación
+    /**
+     * crearReglasValidacion.
+     *
+     * @author	Davinajul
+     * @since	v0.0.1
+     * @version	v1.0.0	Friday, February 7th, 2020.
+     * @access	private
+     * @return	mixed
+     */
     private function crearReglasValidacion()
     {
         if (isset($_POST['btnInsertar']) && $_POST['btnInsertar'] == "Insertar") {
@@ -280,10 +326,15 @@ class Controlador
         return $reglasValidacion;
     }
 
-
-
-    // Comprueba que los campos contienen datos y además, que la contraseña debe tener más de 8 carácteres
-    // @return Array con los mensajes de error si no se han cumplido alguna regla, si esta vacio, los campos son correctos
+    /**
+     * Comprueba que los campos contienen datos y además, que la contraseña debe tener más de 8 carácteres
+     *
+     * @author	Davinajul
+     * @since	v0.0.1
+     * @version	v1.0.0	Friday, February 7th, 2020.
+     * @access	private
+     * @return	mixed
+     */
     private function validar()
     {
 
@@ -309,7 +360,16 @@ class Controlador
         return $validador->getErrores();
     }
 
-    public function borrarLibro()
+    /**
+     * Borra los libros marcados de la base de datos.
+     *
+     * @author	Davinajul
+     * @since	v0.0.1
+     * @version	v1.0.0	Friday, February 7th, 2020.
+     * @access	private
+     * @return	void
+     */
+    private function borrarLibro()
     {
         $titulo = htmlspecialchars(stripslashes($_POST['detalles']));
         $this->DaoLibros->borrarLibro($titulo);
