@@ -1,6 +1,6 @@
 <?php
 
-include "modelo/database.php";
+include "modelo/Database.php";
 include_once "clases/libro.php";
 
 class DaoLibros

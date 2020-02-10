@@ -47,13 +47,14 @@ class Controlador
                 $nombre = htmlspecialchars($_POST['nombre']);
                 $contraseña = htmlspecialchars($_POST['pass']);
                 $cliente = new Cliente($nombre, $contraseña);
-                
+
                 if (empty($this->validar())) {
 
                     $datosCliente = $this->DaoClientes->checkLogin($cliente);
                     if ($datosCliente && isset($_POST['login'])) {
                         echo "<input type='hidden' name='login' value='login'>";
-                        $resultado = "Bienvenido/a ". $cliente->getNombre();
+                        $resultado = "Bienvenido/a " . $cliente->getNombre() . 
+                        '<form method="post"><input id="btnReg" type="submit" name="salir" value="salir"></form> ';
                         $_SESSION['logeado'] = $_POST['login'];
                         $_SESSION['usuario'] = $cliente->getNombre();
                         $_SESSION['contraseña'] = $cliente->getContraseña();
@@ -70,21 +71,19 @@ class Controlador
                     </div>
                     </form>';
 
-                        if (isset($_POST['login'])){
+                        if (isset($_POST['login'])) {
                             $resultado .= '<br>Usuario/Contraseña incorrecto';
                         }
                     }
-                    
-                    if (isset($_POST['registrarse']) && $_POST['registrarse'] == 'registrarse'){
-                        if (!$this->DaoClientes->checkLogin($cliente)){
+
+                    if (isset($_POST['registrarse']) && $_POST['registrarse'] == 'registrarse') {
+                        if (!$this->DaoClientes->checkLogin($cliente)) {
                             $this->DaoClientes->registrarse($cliente);
                             $resultado .= "<br>El usuario ha sido añadido a la base de datos";
-                        }
-                        else {
+                        } else {
                             $resultado .= "<br>El usuario ya existe en la base de datos";
                         }
                     }
-
                 } else {
 
                     $resultado = "";
@@ -99,7 +98,7 @@ class Controlador
                     $resultado .= '<form id="form" action="index.php" method="post">
                     <div class="datos">
                     <label>Nombre</label>
-                    <input type="text" name="nombre" value=' . $nombre . '><br />
+                    <input type="text" name="nombre" value=' . $cliente->getNombre() . '><br />
                     <label>Contraseña</label>
                     <input type="password" name="pass" /><br />
                     <input id="btnLog" type="submit" name="login" value="login">
@@ -109,14 +108,30 @@ class Controlador
                 }
             } else {
 
-                $_POST['login'] = $_SESSION['logeado'];
-                $nombre = $_SESSION['usuario'];
-                $contraseña = $_SESSION['contraseña'];
-                $resultado = "Bienvenido/a $nombre";
+                if (isset($_POST['salir']) && $_POST['salir'] == "salir") {
+                    session_destroy();
+                    $resultado = '<form id="form" action="index.php" method="post">
+                <div class="datos">
+                <label>Nombre</label>
+                <input class="nom" type="text" name="nombre"><br />
+                <label>Contraseña</label>
+                <input class="nom" type="password" name="pass"><br />
+                <input id="btnLog" type="submit" name="login" value="login">
+                <input id="btnReg" type="submit" name="registrarse" value="registrarse">
+                </div>
+                </form>';
+                    $this->mostrarResultado($resultado, $this->crearLibros(), $this->mostrarLibro(), $this->añadirAlCarrito());
+                } else {
+                    $_POST['login'] = $_SESSION['logeado'];
+                    $nombre = $_SESSION['usuario'];
+                    $contraseña = $_SESSION['contraseña'];
+                    $resultado = 'Bienvenido/a ' . $nombre . 
+                    ' <form method="post"><input id="btnReg" type="submit" name="salir" value="salir"></form> ';
+                }
 
                 if (isset($_POST['btnBorrar']) && $_POST['btnBorrar'] == 'borrar') {
                     $this->borrarLibro();
-                    $resultado .= "<br>El libro ". $_POST['detalles']. " ha sido borrado";
+                    $resultado .= "<br>El libro " . $_POST['detalles'] . " ha sido borrado";
                 }
 
                 if (isset($_POST['btnInsertar']) && $_POST['btnInsertar'] == "Insertar") {
@@ -266,7 +281,7 @@ class Controlador
         return $libros;
     }
 
-    
+
 
     /**
      * Añade los libros al carrito para alquilar
@@ -373,6 +388,5 @@ class Controlador
     {
         $titulo = htmlspecialchars(stripslashes($_POST['detalles']));
         $this->DaoLibros->borrarLibro($titulo);
-        
     }
 }

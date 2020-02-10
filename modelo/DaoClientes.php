@@ -1,6 +1,6 @@
 <?php
 
-include_once "modelo/database.php";
+include_once "modelo/Database.php";
 include_once "clases/clientes.php";
 
 class DaoClientes{
