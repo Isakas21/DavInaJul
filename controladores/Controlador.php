@@ -30,9 +30,9 @@ class Controlador
             $resultado = '<form id="form" action="index.php" method="post">
                 <div class="datos">
                 <label>Nombre</label>
-                <input class="nom" type="text" name="nombre"><br />
+                <input class="nom" type="text" name="nombre">
                 <label>Contraseña</label>
-                <input class="nom" type="password" name="pass"><br />
+                <input class="nom" type="password" name="pass">
                 <input id="btnLog" type="submit" name="login" value="login">
                 <input id="btnReg" type="submit" name="registrarse" value="registrarse">
                 </div>
@@ -53,8 +53,8 @@ class Controlador
                     $datosCliente = $this->DaoClientes->checkLogin($cliente);
                     if ($datosCliente && isset($_POST['login'])) {
                         echo "<input type='hidden' name='login' value='login'>";
-                        $resultado = "Bienvenido/a " . $cliente->getNombre() . 
-                        '<form method="post"><input id="btnReg" type="submit" name="salir" value="salir"></form> ';
+                        $resultado = "Bienvenido/a " . $cliente->getNombre() .
+                            '<form method="post"><input id="btnReg" type="submit" name="salir" value="salir"></form> ';
                         $_SESSION['logeado'] = $_POST['login'];
                         $_SESSION['usuario'] = $cliente->getNombre();
                         $_SESSION['contraseña'] = $cliente->getContraseña();
@@ -63,9 +63,9 @@ class Controlador
                         $resultado .= '<form id="form" action="index.php" method="post">
                     <div class="datos">
                     <label>Nombre</label>
-                    <input type="text" name="nombre" value=' . $cliente->getNombre() . '><br />
+                    <input type="text" name="nombre" value=' . $cliente->getNombre() . '>
                     <label>Contraseña</label>
-                    <input type="password" name="pass" /><br />
+                    <input type="password" name="pass" />
                     <input id="btnLog" type="submit" name="login" value="login">
                     <input id="btnReg" type="submit" name="registrarse" value="registrarse">
                     </div>
@@ -98,9 +98,9 @@ class Controlador
                     $resultado .= '<form id="form" action="index.php" method="post">
                     <div class="datos">
                     <label>Nombre</label>
-                    <input type="text" name="nombre" value=' . $cliente->getNombre() . '><br />
+                    <input type="text" name="nombre" value=' . $cliente->getNombre() . '>
                     <label>Contraseña</label>
-                    <input type="password" name="pass" /><br />
+                    <input type="password" name="pass" />
                     <input id="btnLog" type="submit" name="login" value="login">
                     <input id="btnReg" type="submit" name="registrarse" value="registrarse">
                     </div>
@@ -113,9 +113,9 @@ class Controlador
                     $resultado = '<form id="form" action="index.php" method="post">
                 <div class="datos">
                 <label>Nombre</label>
-                <input class="nom" type="text" name="nombre"><br />
+                <input class="nom" type="text" name="nombre">
                 <label>Contraseña</label>
-                <input class="nom" type="password" name="pass"><br />
+                <input class="nom" type="password" name="pass">
                 <input id="btnLog" type="submit" name="login" value="login">
                 <input id="btnReg" type="submit" name="registrarse" value="registrarse">
                 </div>
@@ -125,8 +125,8 @@ class Controlador
                     $_POST['login'] = $_SESSION['logeado'];
                     $nombre = $_SESSION['usuario'];
                     $contraseña = $_SESSION['contraseña'];
-                    $resultado = 'Bienvenido/a ' . $nombre . 
-                    ' <form method="post"><input id="btnReg" type="submit" name="salir" value="salir"></form> ';
+                    $resultado = 'Bienvenido/a ' . $nombre .
+                        ' <form method="post"><input id="btnReg" type="submit" name="salir" value="salir"></form> ';
                 }
 
                 if (isset($_POST['btnBorrar']) && $_POST['btnBorrar'] == 'borrar') {
