@@ -1,6 +1,6 @@
 <?php
-include "IDatabase.php";
-include_once "config/config.php";
+require "IDatabase.php";
+require_once "config/config.php";
 
 class Database implements IDatabase
 {

@@ -1,7 +1,7 @@
 <?php
 
-include "modelo/Database.php";
-include_once "clases/libro.php";
+require "modelo/Database.php";
+require_once "clases/libro.php";
 
 class DaoLibros
 {

@@ -1,8 +1,8 @@
 <?php
-include "cabecera.php";
-include "helper/Utilidades.php";
-include "helper/Input.php";
-include_once "modelo/database.php";
+require "cabecera.php";
+require "helper/Utilidades.php";
+require "helper/Input.php";
+require_once "modelo/Database.php";
 
 
 if (isset($validador)) {
@@ -17,7 +17,8 @@ if (isset($validador)) {
     }
 }
 
-echo "<div class='texto' />";
+echo "<div class='texto'/>";
+echo "<div class='error'>";
 echo $resultado;
 echo "</div>";
 ?>
@@ -130,5 +131,5 @@ echo "</div>";
 </html>
 
 <?php
-include "pie.php";
+require "pie.php";
 ?>

@@ -23,21 +23,15 @@ header {
     justify-content: space-between;
 }
 
-header h1 {
+header h1{
     display: contents;
     margin: 0;
     font-size: 300%;
 }
-
-header div {
-    right: 20;
-    top: 1.2em;
-    font-size: 125%;
-}
-
-.datos {
+.datos{
     display: flex;
     flex-direction: column;
+    justify-content: center;
     width: 200px;
     font-size: 20px;
 }
@@ -46,9 +40,14 @@ header div {
     margin: 5px;
     width: 200px;
 }
-
 #btnLog {
     width: 100%;
+}
+.error {
+    position: absolute;
+    left: 42.5px;
+    top: 125px;
+    
 }
 
 /*main*/
@@ -253,6 +252,7 @@ main {
 .novedades .librosNuevos article img {
     width: 100%;
 }
+
 
 @media all and (min-width: 650px) {
     .libros {

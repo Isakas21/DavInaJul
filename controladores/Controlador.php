@@ -1,10 +1,10 @@
 <?php
-include "clases/libro.php";
-include "clases/clientes.php";
-include "helper/ValidadorForm.php";
-include "helper/ValidadorLibro.php";
-include "modelo/DaoLibros.php";
-include "modelo/DaoClientes.php";
+require "clases/libro.php";
+require "clases/clientes.php";
+require "helper/ValidadorForm.php";
+require "helper/ValidadorLibro.php";
+require "modelo/DaoLibros.php";
+require "modelo/DaoClientes.php";
 
 class Controlador
 {
@@ -27,7 +27,7 @@ class Controlador
         {
             // primera petición
             // se llama al método para mostrar el formulario inici
-            $resultado = '<form id="form" action="index.php" method="post">
+            $resultado = '</div><form id="form" action="index.php" method="post">
                 <div class="datos">
                 <label>Nombre</label>
                 <input class="nom" type="text" name="nombre">
@@ -53,14 +53,28 @@ class Controlador
                     $datosCliente = $this->DaoClientes->checkLogin($cliente);
                     if ($datosCliente && isset($_POST['login'])) {
                         echo "<input type='hidden' name='login' value='login'>";
-                        $resultado = "Bienvenido/a " . $cliente->getNombre() .
+                        $resultado = "</div>Bienvenido/a " . $cliente->getNombre() .
                             '<form method="post"><input id="btnReg" type="submit" name="salir" value="salir"></form> ';
                         $_SESSION['logeado'] = $_POST['login'];
                         $_SESSION['usuario'] = $cliente->getNombre();
                         $_SESSION['contraseña'] = $cliente->getContraseña();
                     } else {
                         $resultado = "";
-                        $resultado .= '<form id="form" action="index.php" method="post">
+
+                        if (isset($_POST['login'])) {
+                            $resultado .= "Usuario/Contraseña incorrecto";
+                        }
+
+                        if (isset($_POST['registrarse']) && $_POST['registrarse'] == 'registrarse') {
+                            if (!$this->DaoClientes->checkLogin($cliente)) {
+                                $this->DaoClientes->registrarse($cliente);
+                                $resultado .= "<br>El usuario ha sido añadido a la base de datos";
+                            } else {
+                                $resultado .= "<br>El usuario ya existe en la base de datos";
+                            }
+                        }
+
+                        $resultado .= '</div><form id="form" action="index.php" method="post">
                     <div class="datos">
                     <label>Nombre</label>
                     <input type="text" name="nombre" value=' . $cliente->getNombre() . '>
@@ -71,19 +85,9 @@ class Controlador
                     </div>
                     </form>';
 
-                        if (isset($_POST['login'])) {
-                            $resultado .= '<br>Usuario/Contraseña incorrecto';
-                        }
                     }
 
-                    if (isset($_POST['registrarse']) && $_POST['registrarse'] == 'registrarse') {
-                        if (!$this->DaoClientes->checkLogin($cliente)) {
-                            $this->DaoClientes->registrarse($cliente);
-                            $resultado .= "<br>El usuario ha sido añadido a la base de datos";
-                        } else {
-                            $resultado .= "<br>El usuario ya existe en la base de datos";
-                        }
-                    }
+                    
                 } else {
 
                     $resultado = "";
@@ -95,7 +99,7 @@ class Controlador
                         $resultado .= $error . "<br>";
                     }
 
-                    $resultado .= '<form id="form" action="index.php" method="post">
+                    $resultado .= '</div><form id="form" action="index.php" method="post">
                     <div class="datos">
                     <label>Nombre</label>
                     <input type="text" name="nombre" value=' . $cliente->getNombre() . '>
@@ -110,7 +114,7 @@ class Controlador
 
                 if (isset($_POST['salir']) && $_POST['salir'] == "salir") {
                     session_destroy();
-                    $resultado = '<form id="form" action="index.php" method="post">
+                    $resultado = '</div><form id="form" action="index.php" method="post">
                 <div class="datos">
                 <label>Nombre</label>
                 <input class="nom" type="text" name="nombre">
@@ -125,8 +129,8 @@ class Controlador
                     $_POST['login'] = $_SESSION['logeado'];
                     $nombre = $_SESSION['usuario'];
                     $contraseña = $_SESSION['contraseña'];
-                    $resultado = 'Bienvenido/a ' . $nombre .
-                        ' <form method="post"><input id="btnReg" type="submit" name="salir" value="salir"></form> ';
+                    $resultado = '</div>Bienvenido/a ' . $nombre .
+                        '<form method="post"><input id="btnReg" type="submit" name="salir" value="salir"></form> ';
                 }
 
                 if (isset($_POST['btnBorrar']) && $_POST['btnBorrar'] == 'borrar') {
@@ -158,7 +162,7 @@ class Controlador
                     } else {
 
                         foreach ($this->validar() as $error) {
-                            $resultado .= "<br>" . $error;
+                            $resultado .= "<br>" . $error . "";
                         }
                     }
                 }
@@ -173,7 +177,7 @@ class Controlador
     private function mostrarResultado($resultado, $libros, $detalle, $librosCarro)
     {
         // y se muestra la vista del resultado (la plantilla resultado.,php)
-        include 'vistas/vista_resultado.php';
+        require 'vistas/vista_resultado.php';
     }
 
     /**

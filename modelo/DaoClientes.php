@@ -1,7 +1,7 @@
 <?php
 
-include_once "modelo/Database.php";
-include_once "clases/clientes.php";
+require_once "modelo/Database.php";
+require_once "clases/clientes.php";
 
 class DaoClientes{
 
@@ -26,7 +26,7 @@ class DaoClientes{
         $this->db->conectar();
         $nombre = $cliente->getNombre();
         $password = $cliente->getContraseña();
-        $consulta = "SELECT `Nombre` FROM `Clientes` WHERE Nombre = '$nombre' AND Password = '$password'";
+        $consulta = "SELECT `Nombre` FROM `clientes` WHERE Nombre = '$nombre' AND Password = '$password'";
         $result = $this->db->ejecutarSql($consulta);
         if(!$result->fetch()){
             $this->db->desconectar();
@@ -53,7 +53,7 @@ class DaoClientes{
         $this->db->conectar();
         $nombre = $cliente->getNombre();
         $password = $cliente->getContraseña();
-        $insertar = "INSERT INTO `Clientes` (`Nombre`,`Password`) VALUES ('$nombre','$password')";
+        $insertar = "INSERT INTO `clientes` (`Nombre`,`Password`) VALUES ('$nombre','$password')";
         $args = array();
         $result = $this->db->ejecutarSqlActualizacion($insertar,$args);
         $this->db->desconectar();
